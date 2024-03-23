@@ -1,0 +1,163 @@
+Removed Member From Class: ClassName=DIFFAMP Member=C13
+Removed Member From Class: ClassName=MC Member=C19
+Removed Member From Class: ClassName=MC Member=C24
+Removed Member From Class: ClassName=MC Member=C25
+Removed Member From Class: ClassName=DIFFAMP Member=C28
+Removed Member From Class: ClassName=DIFFAMP Member=C32
+Removed Member From Class: ClassName=MC Member=C35
+Removed Member From Class: ClassName=Relay and connector Member=C36
+Removed Member From Class: ClassName=MC Member=C37
+Removed Member From Class: ClassName=Relay and connector Member=C37
+Removed Member From Class: ClassName=Relay and connector Member=C38
+Removed Member From Class: ClassName=DIFFAMP Member=IC2
+Removed Member From Class: ClassName=Relay and connector Member=IC7
+Removed Member From Class: ClassName=Relay and connector Member=R15
+Removed Member From Class: ClassName=MC Member=R20
+Removed Member From Class: ClassName=DIFFAMP Member=R21
+Removed Member From Class: ClassName=DIFFAMP Member=R26
+Removed Member From Class: ClassName=MC Member=R27
+Removed Member From Class: ClassName=DIFFAMP Member=R31
+Removed Member From Class: ClassName=Relay and connector Member=R35
+Change Component Designator: OldDesignator=C1 NewDesignator=C37
+Change Component Designator: OldDesignator=C2 NewDesignator=C21
+Change Component Designator: OldDesignator=C3 NewDesignator=C42
+Change Component Designator: OldDesignator=C4 NewDesignator=C40
+Change Component Designator: OldDesignator=C5 NewDesignator=C14
+Change Component Designator: OldDesignator=C6 NewDesignator=C38
+Change Component Designator: OldDesignator=C7 NewDesignator=C35
+Change Component Designator: OldDesignator=C8 NewDesignator=C41
+Change Component Designator: OldDesignator=C9 NewDesignator=C13
+Change Component Designator: OldDesignator=C10 NewDesignator=C23
+Change Component Designator: OldDesignator=C11 NewDesignator=C39
+Change Component Designator: OldDesignator=C12 NewDesignator=C36
+Change Component Designator: OldDesignator=C13 NewDesignator=C27
+Change Component Designator: OldDesignator=C14 NewDesignator=C25
+Change Component Designator: OldDesignator=C15 NewDesignator=C28
+Change Component Designator: OldDesignator=C16 NewDesignator=C12
+Change Component Designator: OldDesignator=C17 NewDesignator=C24
+Change Component Designator: OldDesignator=C18 NewDesignator=C26
+Change Component Designator: OldDesignator=C19 NewDesignator=C18
+Change Component Designator: OldDesignator=C20 NewDesignator=C11
+Change Component Designator: OldDesignator=C21 NewDesignator=C8
+Change Component Designator: OldDesignator=C22 NewDesignator=C19
+Change Component Designator: OldDesignator=C23 NewDesignator=C3
+Change Component Designator: OldDesignator=C24 NewDesignator=C10
+Change Component Designator: OldDesignator=C25 NewDesignator=C15
+Change Component Designator: OldDesignator=C26 NewDesignator=C9
+Change Component Designator: OldDesignator=C27 NewDesignator=C33
+Change Component Designator: OldDesignator=C28 NewDesignator=C7
+Change Component Designator: OldDesignator=C29 NewDesignator=C17
+Change Component Designator: OldDesignator=C30 NewDesignator=C31
+Change Component Designator: OldDesignator=C31 NewDesignator=C6
+Change Component Designator: OldDesignator=C32 NewDesignator=C16
+Change Component Designator: OldDesignator=C33 NewDesignator=C5
+Change Component Designator: OldDesignator=C34 NewDesignator=C22
+Change Component Designator: OldDesignator=C35 NewDesignator=C2
+Change Component Designator: OldDesignator=C36 NewDesignator=C20
+Change Component Designator: OldDesignator=C37 NewDesignator=C34
+Change Component Designator: OldDesignator=C38 NewDesignator=C29
+Change Component Designator: OldDesignator=C39 NewDesignator=C1
+Change Component Designator: OldDesignator=C40 NewDesignator=C4
+Change Component Designator: OldDesignator=CP2 NewDesignator=CP2102
+Change Component Designator: OldDesignator=D1 NewDesignator=D3
+Change Component Designator: OldDesignator=D3 NewDesignator=D1
+Change Component Designator: OldDesignator=IC1 NewDesignator=IC7
+Change Component Designator: OldDesignator=IC2 NewDesignator=IC3
+Change Component Designator: OldDesignator=IC3 NewDesignator=IC6
+Change Component Designator: OldDesignator=IC4 NewDesignator=IC2
+Change Component Designator: OldDesignator=IC6 NewDesignator=IC1
+Change Component Designator: OldDesignator=IC7 NewDesignator=IC4
+Change Component Designator: OldDesignator=ICSP1 NewDesignator=ICSP
+Change Component Designator: OldDesignator=IN1 NewDesignator=IN
+Change Component Designator: OldDesignator=L1 NewDesignator=L13
+Change Component Designator: OldDesignator=OUT1 NewDesignator=OUT
+Change Component Designator: OldDesignator=POWER1 NewDesignator=POWER
+Change Component Designator: OldDesignator=R1 NewDesignator=R30
+Change Component Designator: OldDesignator=R2 NewDesignator=R47
+Change Component Designator: OldDesignator=R3 NewDesignator=R26
+Change Component Designator: OldDesignator=R4 NewDesignator=R22
+Change Component Designator: OldDesignator=R5 NewDesignator=R37
+Change Component Designator: OldDesignator=R6 NewDesignator=R42
+Change Component Designator: OldDesignator=R7 NewDesignator=R23
+Change Component Designator: OldDesignator=R8 NewDesignator=R27
+Change Component Designator: OldDesignator=R9 NewDesignator=R45
+Change Component Designator: OldDesignator=R10 NewDesignator=R31
+Change Component Designator: OldDesignator=R11 NewDesignator=R28
+Change Component Designator: OldDesignator=R12 NewDesignator=R46
+Change Component Designator: OldDesignator=R13 NewDesignator=R24
+Change Component Designator: OldDesignator=R14 NewDesignator=R20
+Change Component Designator: OldDesignator=R15 NewDesignator=R32
+Change Component Designator: OldDesignator=R16 NewDesignator=R36
+Change Component Designator: OldDesignator=R17 NewDesignator=R21
+Change Component Designator: OldDesignator=R18 NewDesignator=R25
+Change Component Designator: OldDesignator=R19 NewDesignator=R44
+Change Component Designator: OldDesignator=R20 NewDesignator=R29
+Change Component Designator: OldDesignator=R21 NewDesignator=R14
+Change Component Designator: OldDesignator=R22 NewDesignator=R1
+Change Component Designator: OldDesignator=R23 NewDesignator=R17
+Change Component Designator: OldDesignator=R24 NewDesignator=R11
+Change Component Designator: OldDesignator=R25 NewDesignator=R10
+Change Component Designator: OldDesignator=R26 NewDesignator=R19
+Change Component Designator: OldDesignator=R27 NewDesignator=R18
+Change Component Designator: OldDesignator=R28 NewDesignator=R12
+Change Component Designator: OldDesignator=R29 NewDesignator=R16
+Change Component Designator: OldDesignator=R30 NewDesignator=R13
+Change Component Designator: OldDesignator=R31 NewDesignator=R6
+Change Component Designator: OldDesignator=R32 NewDesignator=R3
+Change Component Designator: OldDesignator=R33 NewDesignator=R15
+Change Component Designator: OldDesignator=R34 NewDesignator=R4
+Change Component Designator: OldDesignator=R35 NewDesignator=R34
+Change Component Designator: OldDesignator=R36 NewDesignator=R35
+Change Component Designator: OldDesignator=R37 NewDesignator=R33
+Change Component Designator: OldDesignator=R38 NewDesignator=R43
+Change Component Designator: OldDesignator=R39 NewDesignator=R40
+Change Component Designator: OldDesignator=R40 NewDesignator=R41
+Change Component Designator: OldDesignator=R41 NewDesignator=R2
+Change Component Designator: OldDesignator=R42 NewDesignator=R39
+Change Component Designator: OldDesignator=R43 NewDesignator=R38
+Change Component Designator: OldDesignator=R44 NewDesignator=R5
+Added Component: Designator=R7(RES: 0805)
+Add component (AddParameter): Name = "HelpURL"; Value = "https://www.digikey.com/product-detail/en/yageo/RC0805JR-07100RL/311-100ARCT-ND/731185"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer"; Value = "Yageo"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "0805"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "PartNumber"; Value = "RC0805JR-07100RL"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Power"; Value = "0.125W"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Temperature"; Value = "-55...+125°C"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Tolerance"; Value = "±5%"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "TypeResistor"; Value = "Resistor film"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "10k"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ValueManufacturerPartNumber"; Value = "Resistor film, 10k, ±5%, 0805, 0.125W, -55...+125°C"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=STATBT Pin=R7-1
+Added Pin To Net: NetName=+3.3 Pin=R7-2
+Added Member To Class: ClassName=Relay and connector Member=Component C3 Ceramic capacitor, 1nF, X7R, ±10%, 16V, 0805, -55...+125°C
+Added Member To Class: ClassName=Relay and connector Member=Component C9 Ceramic capacitor, 10pF, X7R, ±10%, 16V, 0805, -55...+125°C
+Added Member To Class: ClassName=Relay and connector Member=Component C11 Ceramic capacitor, 0.1?F, X7R, ±10%, , 0805, -55...+125°C
+Added Member To Class: ClassName=Relay and connector Member=Component C12 Aluminium capacitor, 220?F, 25V, ±20%, 54mOhm, 14x10x5 mm, -55...+105°C
+Added Member To Class: ClassName=Relay and connector Member=Component C13 Aluminium capacitor, 220?F, 25V, ±20%, 54mOhm, 14x10x5 mm, -55...+105°C
+Added Member To Class: ClassName=Relay and connector Member=Component C14 Aluminium capacitor, 220?F, 25V, ±20%, 54mOhm, 14x10x5 mm, -55...+105°C
+Added Member To Class: ClassName=Relay and connector Member=Component C17 Ceramic capacitor, 0.1?F, X7R, ±10%, , 0805, -55...+125°C
+Added Member To Class: ClassName=Relay and connector Member=Component C19 Ceramic capacitor, 0.1?F, X7R, ±10%, , 0805, -55...+125°C
+Added Member To Class: ClassName=MC Member=Component C21 Aluminium capacitor, 220?F, 25V, ±20%, 54mOhm, 14x10x5 mm, -55...+105°C
+Added Member To Class: ClassName=MC Member=Component C22 Ceramic capacitor, 0.1?F, X7R, ±10%, , 0805, -55...+125°C
+Added Member To Class: ClassName=MC Member=Component C23 Ceramic capacitor, 0.1?F, X7R, ±10%, , 0805, -55...+125°C
+Added Member To Class: ClassName=MC Member=Component C26 Ceramic capacitor, 0.1?F, X7R, ±10%, , 0805, -55...+125°C
+Added Member To Class: ClassName=MC Member=Component C28 Ceramic capacitor, 9pF, X7R, ±10%, , 0805, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component C33 Ceramic capacitor, 0.1?F, X7R, ±10%, 16V, 0805, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component C35 Ceramic capacitor, 0.1?F, X7R, ±10%, 16V, 0805, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component C37 Ceramic capacitor, 0.1?F, X7R, ±10%, 16V, 0805, -55...+125°C
+Added Member To Class: ClassName=Relay and connector Member=Component IC1 MAX485ECSA+
+Added Member To Class: ClassName=Relay and connector Member=Component IC3 L7805CV
+Added Member To Class: ClassName=DIFFAMP Member=Component IC6 LM1877N-9_NOPB
+Added Member To Class: ClassName=DIFFAMP Member=Component IC7 LM1877N-9_NOPB
+Added Member To Class: ClassName=Relay and connector Member=Component R1 Resistor film, 10, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=Relay and connector Member=Component R3 Resistor film, 10, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component R5 Resistor film, 0, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=MC Member=Component R7 Resistor film, 10k, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=MC Member=Component R10 Resistor film, 10k, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=MC Member=Component R16 Resistor film, 1k, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component R29 Resistor film, 10k, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component R37 Resistor film, 1k, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component R43 Resistor film, 1k, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component R44 Resistor film, 10k, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component R46 Resistor film, 10k, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component R47 Resistor film, 10k, ±5%, 0805, 0.125W, -55...+125°C

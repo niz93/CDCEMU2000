@@ -1,0 +1,11 @@
+Removed Pin From Net: NetName=PLAY Pin=R10-1
+Removed Pin From Net: NetName=PAUSE Pin=R11-1
+Removed Pin From Net: NetName=SKIP F Pin=R17-1
+Removed Pin From Net: NetName=SKIP B Pin=R18-1
+Removed Pin From Net: NetName=STATBT Pin=R19-1
+Change Component Designator: OldDesignator=Z? NewDesignator=Z1
+Added Pin To Net: NetName=STATBT Pin=R10-1
+Added Pin To Net: NetName=PLAY Pin=R11-1
+Added Pin To Net: NetName=PAUSE Pin=R17-1
+Added Pin To Net: NetName=SKIP F Pin=R18-1
+Added Pin To Net: NetName=SKIP B Pin=R19-1

@@ -1,0 +1,4 @@
+Removed Pin From Net: NetName=SKIP F Pin=U1-4
+Removed Pin From Net: NetName=SKIP B Pin=U1-5
+Added Pin To Net: NetName=SKIP B Pin=U1-2
+Added Pin To Net: NetName=SKIP F Pin=U1-3

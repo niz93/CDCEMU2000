@@ -1,0 +1,14 @@
+Added Component: Designator=U?(F6988-BK3266)
+Added Pin To Net: NetName=GND Pin=U?-1
+Added Pin To Net: NetName=GND Pin=U?-3
+Added Pin To Net: NetName=NetR201_2 Pin=U?-10
+Added Pin To Net: NetName=NetR202_2 Pin=U?-11
+Added Pin To Net: NetName=GND Pin=U?-16
+Added Pin To Net: NetName=GND Pin=U?-25
+Added Pin To Net: NetName=Line left (-) Pin=U?-32
+Added Pin To Net: NetName=Line left (+) Pin=U?-33
+Added Pin To Net: NetName=Line right (+) Pin=U?-34
+Added Pin To Net: NetName=Line right (-) Pin=U?-35
+Added Pin To Net: NetName=+3.3 Pin=U?-37
+Added Pin To Net: NetName=GND Pin=U?-40
+Added Member To Class: ClassName=MC Member=Component U? F6988

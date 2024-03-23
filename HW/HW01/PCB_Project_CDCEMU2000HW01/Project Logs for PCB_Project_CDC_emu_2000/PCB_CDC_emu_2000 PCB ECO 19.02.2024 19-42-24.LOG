@@ -1,0 +1,163 @@
+Removed Member From Class: ClassName=MC Member=R?
+Change Component Designator: OldDesignator=C? NewDesignator=C29
+Change Component Designator: OldDesignator=C? NewDesignator=C30
+Change Component Designator: OldDesignator=C? NewDesignator=C31
+Change Component Designator: OldDesignator=C? NewDesignator=C32
+Change Component Designator: OldDesignator=C? NewDesignator=C33
+Change Component Designator: OldDesignator=C? NewDesignator=C34
+Change Component Designator: OldDesignator=C? NewDesignator=C35
+Change Component Designator: OldDesignator=C? NewDesignator=C36
+Change Component Designator: OldDesignator=C? NewDesignator=C37
+Change Component Designator: OldDesignator=C? NewDesignator=C38
+Change Component Designator: OldDesignator=C? NewDesignator=C39
+Change Component Designator: OldDesignator=C? NewDesignator=C40
+Change Component Designator: OldDesignator=C? NewDesignator=C41
+Change Component Designator: OldDesignator=C? NewDesignator=C42
+Change Component Designator: OldDesignator=CP? NewDesignator=CP1
+Change Component Designator: OldDesignator=IC? NewDesignator=IC6
+Change Component Designator: OldDesignator=IC? NewDesignator=IC7
+Change Component Designator: OldDesignator=R? NewDesignator=R10
+Change Component Designator: OldDesignator=R? NewDesignator=R11
+Change Component Designator: OldDesignator=R? NewDesignator=R17
+Change Component Designator: OldDesignator=R? NewDesignator=R18
+Change Component Designator: OldDesignator=R? NewDesignator=R19
+Change Component Designator: OldDesignator=R? NewDesignator=R20
+Change Component Designator: OldDesignator=R? NewDesignator=R21
+Change Component Designator: OldDesignator=R? NewDesignator=R22
+Change Component Designator: OldDesignator=R? NewDesignator=R23
+Change Component Designator: OldDesignator=R? NewDesignator=R24
+Change Component Designator: OldDesignator=R? NewDesignator=R25
+Change Component Designator: OldDesignator=R? NewDesignator=R26
+Change Component Designator: OldDesignator=R? NewDesignator=R27
+Change Component Designator: OldDesignator=R? NewDesignator=R28
+Change Component Designator: OldDesignator=R? NewDesignator=R29
+Change Component Designator: OldDesignator=R? NewDesignator=R30
+Change Component Designator: OldDesignator=R? NewDesignator=R31
+Change Component Designator: OldDesignator=R? NewDesignator=R32
+Change Component Designator: OldDesignator=R? NewDesignator=R33
+Change Component Designator: OldDesignator=R? NewDesignator=R34
+Change Component Designator: OldDesignator=R? NewDesignator=R35
+Change Component Designator: OldDesignator=R? NewDesignator=R36
+Change Component Designator: OldDesignator=R? NewDesignator=R37
+Change Component Designator: OldDesignator=R? NewDesignator=R38
+Change Component Designator: OldDesignator=R? NewDesignator=R39
+Change Component Designator: OldDesignator=R? NewDesignator=R40
+Change Component Designator: OldDesignator=R? NewDesignator=R41
+Change Component Designator: OldDesignator=R? NewDesignator=R42
+Change Component Designator: OldDesignator=R? NewDesignator=R43
+Change Component Designator: OldDesignator=R? NewDesignator=R44
+Change Component Designator: OldDesignator=R? NewDesignator=R45
+Change Component Designator: OldDesignator=R? NewDesignator=R46
+Change Component Designator: OldDesignator=R? NewDesignator=R47
+Change Component Designator: OldDesignator=U?? NewDesignator=U1
+Added Pin To Net: NetName=NetC27_1 Pin=Y1-2
+Change Net Name : Old Net Name=NetC?_1 New Net Name=NetC40_1
+Change Net Name : Old Net Name=NetC?_2 New Net Name=NetC40_2
+Change Net Name : Old Net Name=NetIC?_2 New Net Name=NetIC7_2
+Change Net Name : Old Net Name=NetIC?_6 New Net Name=NetIC6_6
+Change Net Name : Old Net Name=NetIC?_7 New Net Name=NetIC6_7
+Change Net Name : Old Net Name=NetIC?_9 New Net Name=NetIC6_9
+Change Net Name : Old Net Name=NetR?_1 New Net Name=NetR21_1
+Change Net Name : Old Net Name=NetR?_2 New Net Name=NetR31_2
+Added Pin To Net: NetName=NetC35_2 Pin=C35-2
+Added Pin To Net: NetName=NetC35_2 Pin=R24-1
+Added Net: Name=NetC35_2
+Added Pin To Net: NetName=NetC36_2 Pin=C36-2
+Added Pin To Net: NetName=NetC36_2 Pin=R25-2
+Added Net: Name=NetC36_2
+Added Pin To Net: NetName=NetC37_2 Pin=C37-2
+Added Pin To Net: NetName=NetC37_2 Pin=R26-1
+Added Net: Name=NetC37_2
+Added Pin To Net: NetName=NetC38_2 Pin=C38-2
+Added Pin To Net: NetName=NetC38_2 Pin=R27-2
+Added Net: Name=NetC38_2
+Added Pin To Net: NetName=NetC39_1 Pin=C39-1
+Added Pin To Net: NetName=NetC39_1 Pin=R36-2
+Added Net: Name=NetC39_1
+Added Pin To Net: NetName=NetC39_2 Pin=C39-2
+Added Pin To Net: NetName=NetC39_2 Pin=R44-2
+Added Net: Name=NetC39_2
+Added Pin To Net: NetName=NetC41_1 Pin=C41-1
+Added Pin To Net: NetName=NetC41_1 Pin=R32-2
+Added Net: Name=NetC41_1
+Added Pin To Net: NetName=NetC41_2 Pin=C41-2
+Added Pin To Net: NetName=NetC41_2 Pin=R46-2
+Added Net: Name=NetC41_2
+Added Pin To Net: NetName=NetC42_1 Pin=C42-1
+Added Pin To Net: NetName=NetC42_1 Pin=R37-2
+Added Net: Name=NetC42_1
+Added Pin To Net: NetName=NetC42_2 Pin=C42-2
+Added Pin To Net: NetName=NetC42_2 Pin=R47-2
+Added Net: Name=NetC42_2
+Added Pin To Net: NetName=NetIC6_2 Pin=IC6-2
+Added Pin To Net: NetName=NetIC6_2 Pin=R20-1
+Added Pin To Net: NetName=NetIC6_2 Pin=R24-2
+Added Pin To Net: NetName=NetIC6_2 Pin=R28-1
+Added Net: Name=NetIC6_2
+Added Pin To Net: NetName=NetIC7_6 Pin=IC7-6
+Added Pin To Net: NetName=NetIC7_6 Pin=R37-1
+Added Pin To Net: NetName=NetIC7_6 Pin=R38-1
+Added Net: Name=NetIC7_6
+Added Pin To Net: NetName=NetIC7_7 Pin=IC7-7
+Added Pin To Net: NetName=NetIC7_7 Pin=R30-2
+Added Pin To Net: NetName=NetIC7_7 Pin=R39-1
+Added Net: Name=NetIC7_7
+Added Pin To Net: NetName=NetIC7_9 Pin=IC7-9
+Added Pin To Net: NetName=NetIC7_9 Pin=R41-1
+Added Pin To Net: NetName=NetIC7_9 Pin=R42-1
+Added Net: Name=NetIC7_9
+Added Pin To Net: NetName=NetR23_1 Pin=R23-1
+Added Pin To Net: NetName=NetR23_1 Pin=R27-1
+Added Pin To Net: NetName=NetR23_1 Pin=R31-1
+Added Net: Name=NetR23_1
+Added Pin To Net: NetName=NetR29_2 Pin=R29-2
+Added Pin To Net: NetName=NetR29_2 Pin=R34-2
+Added Net: Name=NetR29_2
+Added Pin To Net: NetName=SI Pin=U1-8
+Added Net: Name=SI
+Added Member To Class: ClassName=DIFFAMP Member=Component C29 Aluminium capacitor, 100?F, 25V, ±20%, 54mOhm, 14x10x5 mm, -55...+105°C
+Added Member To Class: ClassName=DIFFAMP Member=Component C30 Aluminium capacitor, 100?F, 25V, ±20%, 54mOhm, 14x10x5 mm, -55...+105°C
+Added Member To Class: ClassName=DIFFAMP Member=Component C31 Aluminium capacitor, 100?F, 25V, ±20%, 54mOhm, 14x10x5 mm, -55...+105°C
+Added Member To Class: ClassName=DIFFAMP Member=Component C32 Aluminium capacitor, 100?F, 25V, ±20%, 54mOhm, 14x10x5 mm, -55...+105°C
+Added Member To Class: ClassName=DIFFAMP Member=Component C33 Ceramic capacitor, 0.1?F, X7R, ±10%, 16V, 0805, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component C34 Ceramic capacitor, 0.1?F, X7R, ±10%, 16V, 0805, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component C35 Ceramic capacitor, 0.1?F, X7R, ±10%, 16V, 0805, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component C37 Ceramic capacitor, 0.1?F, X7R, ±10%, 16V, 0805, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component C38 Ceramic capacitor, 0.1?F, X7R, ±10%, 16V, 0805, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component C39 Aluminium capacitor, 10?F, 25V, ±20%, 54mOhm, 14x10x5 mm, -55...+105°C
+Added Member To Class: ClassName=DIFFAMP Member=Component C40 Aluminium capacitor, 10?F, 25V, ±20%, 54mOhm, 14x10x5 mm, -55...+105°C
+Added Member To Class: ClassName=DIFFAMP Member=Component C41 Aluminium capacitor, 10?F, 25V, ±20%, 54mOhm, 14x10x5 mm, -55...+105°C
+Added Member To Class: ClassName=DIFFAMP Member=Component C42 Aluminium capacitor, 10?F, 25V, ±20%, 54mOhm, 14x10x5 mm, -55...+105°C
+Added Member To Class: ClassName=DIFFAMP Member=Component IC6 LM1877N-9_NOPB
+Added Member To Class: ClassName=MC Member=Component R10 Resistor film, 10k, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=MC Member=Component R11 Resistor film, 10k, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=MC Member=Component R17 Resistor film, 10k, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=MC Member=Component R18 Resistor film, 10k, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=MC Member=Component R19 Resistor film, 10k, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component R20 Resistor film, 0, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component R21 Resistor film, 0, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component R22 Resistor film, 0, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component R23 Resistor film, 0, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component R24 Resistor film, 100, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component R25 Resistor film, 100, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component R26 Resistor film, 100, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component R27 Resistor film, 100, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component R28 Resistor film, 10k, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component R29 Resistor film, 10k, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component R30 Resistor film, 10k, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component R32 Resistor film, 1k, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component R33 Resistor film, 100k, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component R34 Resistor film, 1k, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component R35 Resistor film, 100k, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component R36 Resistor film, 1k, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component R37 Resistor film, 1k, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component R38 Resistor film, 100k, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component R39 Resistor film, 1k, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component R40 Resistor film, 1k, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component R41 Resistor film, 100k, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component R42 Resistor film, 1k, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component R43 Resistor film, 1k, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component R44 Resistor film, 10k, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component R45 Resistor film, 10k, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component R46 Resistor film, 10k, ±5%, 0805, 0.125W, -55...+125°C
+Added Member To Class: ClassName=DIFFAMP Member=Component R47 Resistor film, 10k, ±5%, 0805, 0.125W, -55...+125°C

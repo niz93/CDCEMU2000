@@ -1,0 +1,6 @@
+Removed Pin From Net: NetName=SOUNDON Pin=R7-2
+Removed Pin From Net: NetName=NetR7_1 Pin=SOUND-1
+Removed Pin From Net: NetName=GND Pin=SOUND-2
+Added Pin To Net: NetName=NFSCH Pin=R7-2
+Added Pin To Net: NetName=+5 Pin=SOUND-1
+Added Pin To Net: NetName=NetR7_1 Pin=SOUND-2

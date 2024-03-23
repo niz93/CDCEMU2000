@@ -1,0 +1,6 @@
+Change Component Designator: OldDesignator=X2 NewDesignator=ICSP
+Change Component Designator: OldDesignator=X3 NewDesignator="CP2102"
+Change Net Name : Old Net Name=NetC11_1 New Net Name=Net"CP2102"_2
+Change Net Name : Old Net Name=NetD101_2 New Net Name=Net"CP2102"_6
+Change Net Name : Old Net Name=NetR103_2 New Net Name=Net"CP2102"_3
+Change Net Name : Old Net Name=NetR104_2 New Net Name=Net"CP2102"_4

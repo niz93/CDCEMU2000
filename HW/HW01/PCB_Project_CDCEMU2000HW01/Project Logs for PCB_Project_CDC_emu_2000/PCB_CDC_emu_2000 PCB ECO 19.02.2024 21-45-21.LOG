@@ -1,0 +1,41 @@
+Removed Pin From Net: NetName=NetC28_1 Pin=Y1-1
+Removed Pin From Net: NetName=NetC27_1 Pin=Y1-2
+Removed Member From Class: ClassName=MC Member=Y1
+Change Component Comment : Designator=C27 Old Comment=Ceramic capacitor, 20pF, X7R, ±10%, , 0805, -55...+125°C New Comment=Ceramic capacitor, 9pF, X7R, ±10%, , 0805, -55...+125°C
+Change Component Comment : Designator=C28 Old Comment=Ceramic capacitor, 20pF, X7R, ±10%, , 0805, -55...+125°C New Comment=Ceramic capacitor, 9pF, X7R, ±10%, , 0805, -55...+125°C
+Change component parameters: Designator = "C27" ("C27"); Footprint = "CAP: 0805"; UniqueID = "\JVCVAEJB" ("\JVCVAEJB")
+Change component parameters (AddParameter): Name = "HelpURL"; Value = "https://www.digikey.com/product-detail/en/yageo/CC0805KRX7R7BB104/311-1142-1-ND/303052"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer"; Value = "Yageo"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Package"; Value = "0805"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "PartNumber"; Value = "CC0805KRX7R7BB104"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Temperature"; Value = "-55...+125°C"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Tolerance"; Value = "±10%"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "TypeCapacitor"; Value = "Ceramic capacitor"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "TypeDielectric"; Value = "X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "9pF"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "ValueManufacturerPartNumber"; Value = "Ceramic capacitor, 9pF, X7R, ±10%, , 0805, -55...+125°C"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C28" ("C28"); Footprint = "CAP: 0805"; UniqueID = "\YNGEOPWD" ("\YNGEOPWD")
+Change component parameters (AddParameter): Name = "HelpURL"; Value = "https://www.digikey.com/product-detail/en/yageo/CC0805KRX7R7BB104/311-1142-1-ND/303052"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer"; Value = "Yageo"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Package"; Value = "0805"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "PartNumber"; Value = "CC0805KRX7R7BB104"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Temperature"; Value = "-55...+125°C"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Tolerance"; Value = "±10%"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "TypeCapacitor"; Value = "Ceramic capacitor"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "TypeDielectric"; Value = "X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "9pF"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "ValueManufacturerPartNumber"; Value = "Ceramic capacitor, 9pF, X7R, ±10%, , 0805, -55...+125°C"; VariantName = "[No Variations]"
+Added Component: Designator=Z?(OSC: 2016)
+Add component (AddParameter): Name = "Frequency"; Value = "25MHz"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "HelpURL"; Value = "https://www.digikey.com/product-detail/en/murata-electronics-north-america/XRCGB25M000F0L00R0/490-5577-1-ND/2368391"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "LoadCapacitance"; Value = "6pF"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer"; Value = "Murata Electronics"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "case 2016"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "PartNumber"; Value = "XRCGB25M000F0L00R0"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Temperature"; Value = "-30...+85°C"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Tolerance"; Value = "±50ppm"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "TypeOscilator"; Value = "Crystal"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ValueManufacturerPartNumber"; Value = "Crystal, 25MHz, 6pF, ±50ppm, case 2016, -30...+85°C"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=NetC27_1 Pin=Z?-1
+Added Pin To Net: NetName=NetC28_1 Pin=Z?-3
+Added Member To Class: ClassName=MC Member=Component Z? Crystal, 25MHz, 6pF, ±50ppm, case 2016, -30...+85°C
