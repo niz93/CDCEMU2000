@@ -17,10 +17,10 @@ long previousMillisLed = 0;     // Время последнего выключ�
 long previousMillisTime = 0;    // Время в секундах
 long interval = 1000;           // Интервал отправки в миллисекундах
 long intervalLed = 5;           // Интервал работы светодиода
-long intervalButton = 50;
+long intervalButton = 200;
 
 #define RS485DE 2                   // Направление потока
-#define SOUNDON 6                   // Включение звука
+#define SOUNDON 3                   // Включение звука
 #define ADDR (byte)0x32             // Адрес приёмника
 #define ADDR0 (byte)0x30            // Адрес приёмника
 #define MASTER_ADDR (byte)0x11      // Адрес источника
@@ -87,7 +87,7 @@ void setup() {
   pinMode(PauseBT, OUTPUT);
   pinMode(SkipFBT, OUTPUT);
   pinMode(SkipBBT, OUTPUT);
-  digitalWrite(LED_BUILTIN, LOW);
+  digitalWrite(LED_BUILTIN, HIGH);
   digitalWrite(SOUNDON, LOW);
   digitalWrite(PlayBT, LOW);
   digitalWrite(PauseBT, LOW);
@@ -98,7 +98,7 @@ void setup() {
 void loop() {
 
   if (millis() - previousMillisLed > intervalLed) {  // если время свечения светодиода вышло, выключаем
-    digitalWrite(LED_BUILTIN, LOW);
+    digitalWrite(LED_BUILTIN, HIGH);
   }
 
   if (millis() - previousMillisButton > intervalButton) {  // если время нажатия кнопки, выключаем
@@ -110,7 +110,7 @@ void loop() {
 
   //======================================================================================================================
   // Подсчёт проигранного времени и включение звука
-  if (MSG_OUT[5] == 0x81 || MSG_OUT[5] == 0x41) {                          // Если идёт возспроизвдение
+  if (MSG_OUT[5] == 0x81 || MSG_OUT[5] == 0x41) {    // Если идёт возспроизвдение
     digitalWrite(SOUNDON, HIGH);                     // Включить звук
     if (millis() - previousMillisTime > interval) {  // Если прошла секунда
 
@@ -183,15 +183,6 @@ void loop() {
     digitalWrite(RS485DE, LOW);
     CRCa = 0xFF;
   }
-
-  //=====================================================================================================================
-  // Переполнение треков
-  if (track == MAX_TRACK) {
-    track = 0x01;
-    MSG_Play1CD1TB[6] = track;
-    MSG_OUT[6] = track;
-    flag = 1;
-  }
   //======================================================================================================================
   if (Serial.available() > 0) {
     byte currentByte = Serial.read();
@@ -211,7 +202,7 @@ void processReceive(byte *data, int length) {
       //======================================================================================================================
       case RecieveState::WAIT_ADDR:
         {
-          if (currentByte == ADDR0 || currentByte == ADDR) { 
+          if (currentByte == ADDR0 || currentByte == ADDR) {
             receiveState = RecieveState::WAIT_MASTER_ADDR;
             packet.addr = currentByte;
           }
@@ -284,7 +275,7 @@ void processReceive(byte *data, int length) {
  * @brief Обработка готового пакета 
  */
 void getPacket(Packet packet) {
-  digitalWrite(LED_BUILTIN, HIGH);  // сигнализируем о принятом пакете
+  digitalWrite(LED_BUILTIN, LOW);  // сигнализируем о принятом пакете
   previousMillisLed = millis();
 
   //======================================================================================================================
@@ -386,8 +377,8 @@ void getPacket(Packet packet) {
 
 
 
-      if (requestedTrack - track == 0) {  //если запрашивается тот же самый трек
-        if (time01Sec > 4 || time10Sec > 0) { // защита от перескоков
+      if (requestedTrack - track == 0) {       //если запрашивается тот же самый трек
+        if (time01Sec > 4 || time10Sec > 0) {  // защита от перескоков
           digitalWrite(SkipBBT, HIGH);
           previousMillisButton = millis();
           time01Sec = 0x00;  // Обнуляем таймеры

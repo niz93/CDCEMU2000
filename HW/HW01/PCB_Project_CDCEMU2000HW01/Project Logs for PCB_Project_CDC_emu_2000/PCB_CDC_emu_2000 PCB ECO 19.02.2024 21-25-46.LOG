@@ -1,8 +1,0 @@
-Removed Pin From Net: NetName=Line left P Pin=U1-16
-Removed Pin From Net: NetName=Line left N Pin=U1-17
-Removed Pin From Net: NetName=Line right P Pin=U1-18
-Removed Pin From Net: NetName=Line right N Pin=U1-19
-Added Pin To Net: NetName=Line left N Pin=U1-16
-Added Pin To Net: NetName=Line left P Pin=U1-17
-Added Pin To Net: NetName=Line right N Pin=U1-18
-Added Pin To Net: NetName=Line right P Pin=U1-19

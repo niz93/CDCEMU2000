@@ -1,4 +1,0 @@
-Removed Pin From Net: NetName=PLAY Pin=U1-2
-Removed Pin From Net: NetName=PAUSE Pin=U1-3
-Added Pin To Net: NetName=PAUSE Pin=U1-30
-Added Pin To Net: NetName=PLAY Pin=U1-31

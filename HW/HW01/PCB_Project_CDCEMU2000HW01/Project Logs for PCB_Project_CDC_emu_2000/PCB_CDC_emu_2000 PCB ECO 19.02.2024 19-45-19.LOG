@@ -1,6 +1,0 @@
-Removed Member From Class: ClassName=DIFFAMP Member=R18
-Added Pin To Net: NetName=SI Pin=CP1-3
-Added Pin To Net: NetName=MOSI Pin=ICSP-4
-Added Member To Class: ClassName=DIFFAMP Member=Component C36 Ceramic capacitor, 0.1?F, X7R, ±10%, 16V, 0805, -55...+125°C
-Added Member To Class: ClassName=DIFFAMP Member=Component IC7 LM1877N-9_NOPB
-Added Member To Class: ClassName=DIFFAMP Member=Component R31 Resistor film, 10k, ±5%, 0805, 0.125W, -55...+125°C
