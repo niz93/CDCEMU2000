@@ -9991,8 +9991,8 @@
                 Id="Automatic Switch Off Time [s]"
                 Desc="The time in seconds after which the Sink switches off. If set to 0 then the Sink remains on indefinitely"
                 Range="Min=0,Max=21600"
-                value="0x0258"
-                displayValue="600" />
+                value="0x0000"
+                displayValue="0" />
             <ConfigItem
                 LocationItem="BlockId=112, Word=2, Bit=0, Size=16"
                 Type="uint"
