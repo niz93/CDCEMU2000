@@ -1,0 +1,4 @@
+Run windows console (cmd) and change dirrectory to /ADK_QCC300x.WIN.1.0.167\tools\bin
+Run nvscmd.exe dump original.ptn - it will show a lot of errors and as result after few minuts makes dump of you chip
+Run nvscmd.exe dump erase
+Run nvscmd.exe burn SW01.ptn all - it will show a lot of errors and as result write new dump on chip
