@@ -1,7 +1,7 @@
 # Partition Table extracted from flash
 
-0, 8K, PS, original_partition0.xuv
-1, 32K, RO, original_partition1.xuv
-2, 200K, RO, original_partition2.xuv
-3, 250K, RO, original_partition3.xuv
-4, 8K, RO, original_partition4.xuv
+0, 8K, PS, SW01_partition0.xuv
+1, 32K, RO, SW01_partition1.xuv
+2, 200K, RO, SW01_partition2.xuv
+3, 250K, RO, SW01_partition3.xuv
+4, 8K, RO, SW01_partition4.xuv

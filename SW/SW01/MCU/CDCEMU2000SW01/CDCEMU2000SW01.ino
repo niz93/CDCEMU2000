@@ -15,8 +15,9 @@ long previousMillis = 0;        // Время последней отправк�
 long previousMillisButton = 0;  // Время последнего нажатия кнопки
 long previousMillisLed = 0;     // Время последнего выключения светодиода
 long previousMillisTime = 0;    // Время в секундах
-long interval = 1000;           // Интервал отправки в миллисекундах
-long intervalLed = 5;           // Интервал работы светодиода
+long interval = 500;           // Интервал отправки в миллисекундах
+long interval1s = 1000;
+long intervalLed = 20;           // Интервал работы светодиода
 long intervalButton = 250;
 
 #define RS485DE 2                   // Направление потока
@@ -37,10 +38,12 @@ long intervalButton = 250;
 
 byte MSG_OUT[12] = { TALK_STATUS, MASTER_ADDR_OUT, ADDR, 0x07, 0x2B, 0x01, 0x01, 0x00, 0x01, 0x00, 0x01, 0x00 };          //шаблон сообщения, дефолтно в паузе первого диска
 byte MSG_Mag1CD[8] = { TALK_STATUS, MASTER_ADDR_OUT, ADDR, 0x03, 0x2C, 0x20, 0x01, 0xD3 };                                //Загружен 1 диск
-byte MSG_CDInfo[12] = { TALK_STATUS, MASTER_ADDR_OUT, ADDR, 0x07, 0x2B, 0xA1, 0x01, MAX_TRACK, 0x66, 0x77, 0x88, 0x51 };  //Данные о треках на диске
+byte MSG_CDInfo[12] = { TALK_STATUS, MASTER_ADDR_OUT, ADDR, 0x07, 0x2B, 0xA1, 0x01, MAX_TRACK, 0x60, 0x59, 0x00, 0xF1 };  //Данные о треках на диске
 byte MSG_Play1CD1TB[12] = { TALK_STATUS, MASTER_ADDR_OUT, ADDR, 0x07, 0x2B, 0xB1, 0x01, 0x00, 0x00, 0x00, 0x01, 0x40 };   //Смена состояний
+byte MSG_CDLoad[12] = { TALK_STATUS, MASTER_ADDR_OUT, ADDR, 0x07, 0x2B, 0x01, 0x01, 0x00, 0x00, 0x00, 0x01, 0x89 };       // Загрузка диска
 
-bool flag = 0;
+bool SendInfoCD = 0;
+bool ChangeStatCD = 0;
 bool reservedPlayBT = 0;
 byte track = 0x01;
 byte CRCa = 0xFF;
@@ -120,7 +123,7 @@ void loop() {
   // Подсчёт проигранного времени и включение звука
   if (MSG_OUT[5] == 0x81 || MSG_OUT[5] == 0x41) {    // Если идёт возспроизвдение
     digitalWrite(SOUNDON, HIGH);                     // Включить звук
-    if (millis() - previousMillisTime > interval) {  // Если прошла секунда
+    if (millis() - previousMillisTime > interval1s) {  // Если прошла секунда
 
       previousMillisTime = millis();  // Фиксируем время
       time01Sec = time01Sec + 0x01;   // Добавляем еденицу секунды
@@ -156,7 +159,20 @@ void loop() {
 
   //======================================================================================================================
   // Смена состояния
-  if (flag > 0) {
+
+  if (SendInfoCD > 0 && (millis() - previousMillis > interval)) {
+    digitalWrite(RS485DE, HIGH);
+    for (byte i = 0; i < 12; i++) {
+      Serial.write(MSG_CDInfo[i]);  // Передача данных о загруженном диске
+    }
+    Serial.flush();
+    digitalWrite(RS485DE, LOW);
+    previousMillis = millis();
+    ChangeStatCD = 1;
+    SendInfoCD = 0;
+  }
+
+  if (ChangeStatCD > 0 && (millis() - previousMillis > interval)) {
     digitalWrite(RS485DE, HIGH);
 
     for (byte i = 1; i < 11; i++) {
@@ -170,12 +186,12 @@ void loop() {
     Serial.flush();
     digitalWrite(RS485DE, LOW);
     CRCa = 0xFF;
-    flag = 0;
+    ChangeStatCD = 0;
     previousMillis = millis();
   }
   //======================================================================================================================
   // Отправка сообщения
-  if (millis() - previousMillis > interval) {
+  if ((millis() - previousMillis > interval) && SendInfoCD == 0 && ChangeStatCD == 0) {
     previousMillis = millis();
     digitalWrite(RS485DE, HIGH);
 
@@ -292,7 +308,7 @@ void getPacket(Packet packet) {
     if (packet.data[0] == 0x62 && packet.data[1] == 0x03) {  // Open CDC MODE
 
       MSG_OUT[5] = 0x81;
-      flag = 1;
+      ChangeStatCD = 1;
       if (millis() > 5000) {
         digitalWrite(PlayBT, HIGH);
         previousMillisButton = millis();
@@ -302,7 +318,7 @@ void getPacket(Packet packet) {
     }
     if (packet.data[0] == 0x62 && packet.data[1] == 0x0A) {  // Close CDC MODE
       MSG_OUT[5] = 0x01;
-      flag = 1;
+      ChangeStatCD = 1;
       if (millis() > 5000) {
         digitalWrite(PauseBT, HIGH);
         previousMillisButton = millis();
@@ -321,30 +337,19 @@ void getPacket(Packet packet) {
     }
   }
   //======================================================================================================================
-  if (packet.dataLength == 0x03) {                                                     // когда на входе 3 байта дата
+  if (packet.dataLength == 0x03) {                                                                                 // когда на входе 3 байта дата
     if (packet.data[0] == 0x62 && packet.data[1] == 0x0C && (packet.data[2] == 0x07 || packet.data[2] == 0x08)) {  //Сколько дисков загружено?
 
 
-      previousMillis = millis();
       digitalWrite(RS485DE, HIGH);
       for (byte i = 0; i < 8; i++) {
         Serial.write(MSG_Mag1CD[i]);  // Передача данных о загруженных дисках
       }
       Serial.flush();
       digitalWrite(RS485DE, LOW);
-
-      delay(5);
-
-      digitalWrite(RS485DE, HIGH);
-      for (byte i = 0; i < 12; i++) {
-        Serial.write(MSG_CDInfo[i]);  // Передача данных о загруженном диске
-      }
-      Serial.flush();
-      digitalWrite(RS485DE, LOW);
-
-      flag = 1;
+      previousMillis = millis();
+      SendInfoCD = 1;
     }
-
   }
   //======================================================================================================================
   if (packet.dataLength == 0x04) {                           // Когда на входе 4 байта дата
@@ -386,8 +391,23 @@ void getPacket(Packet packet) {
 
       MSG_Play1CD1TB[6] = track;
       MSG_OUT[6] = track;
-      flag = 1;
+      ChangeStatCD = 1;
     }
   }
+  //======================================================================================================================
+  if (packet.dataLength == 0x05) {                           // Когда на входе 5 байт дата
+    if (packet.data[0] == 0x62 && packet.data[1] == 0x10) {  // Запроса на переключение диска
+
+      digitalWrite(RS485DE, HIGH);
+      for (byte i = 0; i < 12; i++) {
+        Serial.write(MSG_CDLoad[i]);  // Передача данных о загрузке
+      }
+      Serial.flush();
+      digitalWrite(RS485DE, LOW);
+      previousMillis = millis();
+      SendInfoCD = 1;
+    }
+  }
+
   //======================================================================================================================
 }
