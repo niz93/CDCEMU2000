@@ -33,7 +33,6 @@ long intervalButton = 250;
 #define PauseBT 7                   // Пин паузы
 #define SkipFBT 8                   // Пин переключения вперёд
 #define SkipBBT 9                   // Пин переключения назад
-#define StatBT 5
 
 
 byte MSG_OUT[12] = { TALK_STATUS, MASTER_ADDR_OUT, ADDR, 0x07, 0x2B, 0x01, 0x01, 0x00, 0x01, 0x00, 0x01, 0x00 };          //шаблон сообщения, дефолтно в паузе первого диска
@@ -98,7 +97,6 @@ void setup() {
   digitalWrite(SkipFBT, LOW);
   digitalWrite(SkipBBT, LOW);
   digitalWrite(LED_BUILTIN, HIGH);
-  pinMode(StatBT, INPUT);
 }
 
 void loop() {
@@ -121,18 +119,9 @@ void loop() {
 
 
   //======================================================================================================================
-  //  включение звука
-
-  if (MSG_OUT[5] == 0x81 || MSG_OUT[5] == 0x41) {  // Если идёт возспроизвдение
-    digitalWrite(SOUNDON, HIGH);                   // Включить звук
-  }
-  if (MSG_OUT[5] == 0x01) {      // Если воспроизвдение остановлено
-    digitalWrite(SOUNDON, LOW);  // Выключить звук
-  }
-
-  //======================================================================================================================
-  //Подсчёт проигранного времени и
-  if (digitalRead(StatBT) == 0) {
+  // Подсчёт проигранного времени и включение звука
+  if (MSG_OUT[5] == 0x81 || MSG_OUT[5] == 0x41) {      // Если идёт возспроизвдение
+    digitalWrite(SOUNDON, HIGH);                       // Включить звук
     if (millis() - previousMillisTime > interval1s) {  // Если прошла секунда
 
       previousMillisTime = millis();  // Фиксируем время
@@ -156,19 +145,17 @@ void loop() {
       time10Min = 0x00;      // Скидываем десятки минут в 0
     }
     timeMin = time01Min + time10Min;  // Складываем десятки и еденицы минут
+
+    MSG_OUT[7] = timeMin;   // Отправка минут в общее время
+    MSG_OUT[8] = timeSec;   // Отправка секунд в общее время
+    MSG_OUT[9] = timeMin;   // Отправка минут в время проигрывания трека
+    MSG_OUT[10] = timeSec;  // Отправка минут в время проигрывания трека
   }
-  if (ChangeStatCD == 1) {
-    time01Sec = 0x00;  // Обнуляем таймеры
-    time10Sec = 0x00;
-    time01Min = 0x00;
-    time10Min = 0x00;
-    timeMin = 0x00;
-    timeSec = 0x00;
+
+  if (MSG_OUT[5] == 0x01) {      // Если воспроизвдение остановлено
+    digitalWrite(SOUNDON, LOW);  // Выключить звук
   }
-  MSG_OUT[7] = timeMin;   // Отправка минут в общее время
-  MSG_OUT[8] = timeSec;   // Отправка секунд в общее время
-  MSG_OUT[9] = timeMin;   // Отправка минут в время проигрывания трека
-  MSG_OUT[10] = timeSec;  // Отправка минут в время проигрывания трека
+
   //======================================================================================================================
   // Смена состояния
 
@@ -379,20 +366,32 @@ void getPacket(Packet packet) {
 
       byte requestedTrack = packet.data[3];  // Запрашиваемый номер трека
 
-      if (millis() - previousMillisButton > (intervalButton * 2)) {  //Защита от залипапния кнопки
+      if (millis() - previousMillisButton > (intervalButton*2)) {  //Защита от залипапния кнопки
 
         if ((requestedTrack - track >= 1 && requestedTrack - track < 50) || requestedTrack - track < -50) {  // если следующий трек больше предыдушего или если переходим от последнего к первому
           digitalWrite(SkipFBT, HIGH);
           previousMillisButton = millis();
+          time01Sec = 0x00;  // Обнуляем таймеры
+          time10Sec = 0x00;
+          time01Min = 0x00;
+          time10Min = 0x00;
         }
         if ((requestedTrack - track <= -1 && requestedTrack - track > -50) || requestedTrack - track > 50) {  //если следующий трек меньше предыдущего или если переходим от первого к последнему
           digitalWrite(SkipBBT, HIGH);
           previousMillisButton = millis();
+          time01Sec = 0x00;  // Обнуляем таймеры
+          time10Sec = 0x00;
+          time01Min = 0x00;
+          time10Min = 0x00;
         }
         if (requestedTrack - track == 0) {       //Если запрашивается тот же самый трек
           if (time01Sec > 4 || time10Sec > 0) {  // Защита от перескоков
             digitalWrite(SkipBBT, HIGH);
             previousMillisButton = millis();
+            time01Sec = 0x00;  // Обнуляем таймеры
+            time10Sec = 0x00;
+            time01Min = 0x00;
+            time10Min = 0x00;
           }
         }
       }
