@@ -105,13 +105,13 @@ void loop() {
     digitalWrite(LED_BUILTIN, HIGH);
   }
 
-  if (millis() - previousMillisButton > intervalButton) {  // если время нажатия кнопки, выключаем
+  if (millis() - previousMillisButton > intervalButton) {  // если время нажатия кнопки вышло, выключаем
     digitalWrite(PlayBT, LOW);
     digitalWrite(PauseBT, LOW);
     digitalWrite(SkipFBT, LOW);
     digitalWrite(SkipBBT, LOW);
   }
-  if (reservedPlayBT == 1 && millis() > 5000) {
+  if (reservedPlayBT == 1 && millis() > 5000) {  //исполнение отложенного запуска
     digitalWrite(PlayBT, HIGH);
     previousMillisButton = millis();
     reservedPlayBT = 0;
@@ -120,9 +120,9 @@ void loop() {
 
   //======================================================================================================================
   // Подсчёт проигранного времени и включение звука
-  if (MSG_OUT[5] == 0x81 || MSG_OUT[5] == 0x41) {      // Если идёт возспроизвдение
-    digitalWrite(SOUNDON, HIGH);                       // Включить звук
-    if (millis() - previousMillisTime > interval1s) {  // Если прошла секунда
+  if (MSG_OUT[5] == 0x81 || MSG_OUT[5] == 0x41) {          // Если идёт возспроизвдение
+    if (millis() > 5000) { digitalWrite(SOUNDON, HIGH); }  // Включить звук
+    if (millis() - previousMillisTime > interval1s) {      // Если прошла секунда
 
       previousMillisTime = millis();  // Фиксируем время
       time01Sec = time01Sec + 0x01;   // Добавляем еденицу секунды
@@ -159,23 +159,22 @@ void loop() {
   //======================================================================================================================
   // Смена состояния
 
-  if (SendInfoCD > 0 && (millis() - previousMillis > interval1s)) {
+  if (SendInfoCD > 0 && (millis() - previousMillis > interval1s)) {  //Отправка информации о диске
     previousMillis = millis();
-    digitalWrite(RS485DE, HIGH);
+    digitalWrite(RS485DE, HIGH);  // Режим передачи
     for (byte i = 0; i < 12; i++) {
       Serial.write(MSG_CDInfo[i]);  // Передача данных о загруженном диске
     }
-    Serial.flush();
-    digitalWrite(RS485DE, LOW);
+    Serial.flush();              // Ждём окончание передачи
+    digitalWrite(RS485DE, LOW);  // Режим приёма
 
-    ChangeStatCD = 1;
+    ChangeStatCD = 1;  //Запрос на смену состояния
     SendInfoCD = 0;
   }
 
-  if (ChangeStatCD > 0 && (millis() - previousMillis > 40)) {  // Почему 40? Потому что GP 5 мало, а MEX 1000 много!
+  if (ChangeStatCD > 0 && (millis() - previousMillis > 40)) {  //Смена состояния. Почему 40? Потому что GP 5 мало, а MEX 1000 много
     previousMillis = millis();
-
-    digitalWrite(RS485DE, HIGH);
+    digitalWrite(RS485DE, HIGH);  // Режим передачи
 
     for (byte i = 1; i < 11; i++) {
       CRCa = (CRCa ^ MSG_Play1CD1TB[i]);
@@ -185,8 +184,8 @@ void loop() {
     for (byte i = 0; i < 12; i++) {
       Serial.write(MSG_Play1CD1TB[i]);
     }
-    Serial.flush();
-    digitalWrite(RS485DE, LOW);
+    Serial.flush();              // Ждём окончание передачи
+    digitalWrite(RS485DE, LOW);  // Режим приёма
     CRCa = 0xFF;
     ChangeStatCD = 0;
     digitalWrite(LED_BUILTIN, HIGH);
@@ -195,7 +194,7 @@ void loop() {
   // Отправка сообщения
   if ((millis() - previousMillis > interval1s) && SendInfoCD == 0 && ChangeStatCD == 0) {
     previousMillis = millis();
-    digitalWrite(RS485DE, HIGH);
+    digitalWrite(RS485DE, HIGH);  // Режим передачи
 
     for (byte i = 1; i < 11; i++) {
       CRCa = CRCa ^ MSG_OUT[i];
@@ -205,8 +204,8 @@ void loop() {
     for (byte i = 0; i < 12; i++) {
       Serial.write(MSG_OUT[i]);
     }
-    Serial.flush();
-    digitalWrite(RS485DE, LOW);
+    Serial.flush();              // Ждём окончание передачи
+    digitalWrite(RS485DE, LOW);  // Режим приёма
     CRCa = 0xFF;
     digitalWrite(LED_BUILTIN, LOW);
   }
@@ -215,7 +214,7 @@ void loop() {
   if ((millis() - previousMillis > 999) && (MSG_OUT[6] == 0x99)) {
     MSG_OUT[6] = 0x01;
     MSG_Play1CD1TB[6] = 0x01;
-    ChangeStatCD = 1;
+    ChangeStatCD = 1;  //Запрос на смену состояния
   }
 
 
@@ -318,7 +317,7 @@ void getPacket(Packet packet) {
   if (packet.dataLength == 0x02) {                           // когда на входе 2 байта дата
     if (packet.data[0] == 0x62 && packet.data[1] == 0x03) {  // Open CDC MODE
       MSG_OUT[5] = 0x81;
-      ChangeStatCD = 1;
+      ChangeStatCD = 1;  //Запрос на смену состояния
       if (millis() > 5000) {
         digitalWrite(PlayBT, HIGH);
         previousMillisButton = millis();
@@ -328,7 +327,7 @@ void getPacket(Packet packet) {
     }
     if (packet.data[0] == 0x62 && packet.data[1] == 0x0A) {  // Close CDC MODE
       MSG_OUT[5] = 0x01;
-      ChangeStatCD = 1;
+      ChangeStatCD = 1;  //Запрос на смену состояния
       if (millis() > 5000) {
         digitalWrite(PauseBT, HIGH);
         previousMillisButton = millis();
@@ -336,12 +335,16 @@ void getPacket(Packet packet) {
     }
     if (packet.data[0] == 0x62 && packet.data[1] == 0x0E) {  // Play normal
       MSG_OUT[5] = 0x81;
-      digitalWrite(PlayBT, HIGH);
-      previousMillisButton = millis();
+      if (millis() > 5000) {
+        digitalWrite(PlayBT, HIGH);
+        previousMillisButton = millis();
+      }
     }
     if (packet.data[0] == 0x62 && packet.data[1] == 0x0B) {  // Play random
       MSG_OUT[5] = 0x41;
-      digitalWrite(PauseBT, HIGH);
+      if (millis() > 5000) {
+        digitalWrite(PauseBT, HIGH);
+      }
       previousMillisButton = millis();
     }
   }
@@ -350,14 +353,14 @@ void getPacket(Packet packet) {
     if (packet.data[0] == 0x62 && packet.data[1] == 0x0C && (packet.data[2] == 0x07 || packet.data[2] == 0x08)) {  //Сколько дисков загружено?
 
       previousMillis = millis();
-      digitalWrite(RS485DE, HIGH);
+      digitalWrite(RS485DE, HIGH);  // Режим передачи
       for (byte i = 0; i < 8; i++) {
         Serial.write(MSG_Mag1CD[i]);  // Передача данных о загруженных дисках
       }
-      Serial.flush();
-      digitalWrite(RS485DE, LOW);
+      Serial.flush();              // Ждём окончание передачи
+      digitalWrite(RS485DE, LOW);  // Режим приёма
 
-      SendInfoCD = 1;
+      SendInfoCD = 1;  //Запрос отправку информации о диске
     }
   }
   //======================================================================================================================
@@ -366,26 +369,20 @@ void getPacket(Packet packet) {
 
       byte requestedTrack = packet.data[3];  // Запрашиваемый номер трека
 
-      if (millis() - previousMillisButton > (intervalButton*2)) {  //Защита от залипапния кнопки
+      if (millis() - previousMillisButton > (intervalButton * 2)) {  //Защита от залипапния кнопки
 
         if ((requestedTrack - track >= 1 && requestedTrack - track < 50) || requestedTrack - track < -50) {  // если следующий трек больше предыдушего или если переходим от последнего к первому
-          digitalWrite(SkipFBT, HIGH);
-          previousMillisButton = millis();
-          time01Sec = 0x00;  // Обнуляем таймеры
-          time10Sec = 0x00;
-          time01Min = 0x00;
-          time10Min = 0x00;
+          if (millis() > 5000) {
+            digitalWrite(SkipFBT, HIGH);
+            previousMillisButton = millis();
+            time01Sec = 0x00;  // Обнуляем таймеры
+            time10Sec = 0x00;
+            time01Min = 0x00;
+            time10Min = 0x00;
+          }
         }
         if ((requestedTrack - track <= -1 && requestedTrack - track > -50) || requestedTrack - track > 50) {  //если следующий трек меньше предыдущего или если переходим от первого к последнему
-          digitalWrite(SkipBBT, HIGH);
-          previousMillisButton = millis();
-          time01Sec = 0x00;  // Обнуляем таймеры
-          time10Sec = 0x00;
-          time01Min = 0x00;
-          time10Min = 0x00;
-        }
-        if (requestedTrack - track == 0) {       //Если запрашивается тот же самый трек
-          if (time01Sec > 4 || time10Sec > 0) {  // Защита от перескоков
+          if (millis() > 5000) {
             digitalWrite(SkipBBT, HIGH);
             previousMillisButton = millis();
             time01Sec = 0x00;  // Обнуляем таймеры
@@ -394,12 +391,24 @@ void getPacket(Packet packet) {
             time10Min = 0x00;
           }
         }
+        if (requestedTrack - track == 0) {       //Если запрашивается тот же самый трек
+          if (time01Sec > 4 || time10Sec > 0) {  // Защита от перескоков
+            if (millis() > 5000) {
+              digitalWrite(SkipBBT, HIGH);
+              previousMillisButton = millis();
+              time01Sec = 0x00;  // Обнуляем таймеры
+              time10Sec = 0x00;
+              time01Min = 0x00;
+              time10Min = 0x00;
+            }
+          }
+        }
       }
       track = requestedTrack;  //отправка номера трека в работу
 
       MSG_Play1CD1TB[6] = track;
       MSG_OUT[6] = track;
-      ChangeStatCD = 1;
+      ChangeStatCD = 1;  //Запрос на смену состояния
       digitalWrite(LED_BUILTIN, LOW);
     }
   }
@@ -407,14 +416,14 @@ void getPacket(Packet packet) {
   if (packet.dataLength == 0x05) {                           // Когда на входе 5 байт дата
     if (packet.data[0] == 0x62 && packet.data[1] == 0x10) {  // Запроса на переключение диска
       previousMillis = millis();
-      digitalWrite(RS485DE, HIGH);
+      digitalWrite(RS485DE, HIGH);  // Режим передачи
       for (byte i = 0; i < 12; i++) {
         Serial.write(MSG_CDLoad[i]);  // Передача данных о загрузке
       }
-      Serial.flush();
-      digitalWrite(RS485DE, LOW);
+      Serial.flush();              // Ждём окончание передачи
+      digitalWrite(RS485DE, LOW);  // Режим приёма
 
-      SendInfoCD = 1;
+      SendInfoCD = 1;  //Запрос отправку информации о диске
     }
   }
 
