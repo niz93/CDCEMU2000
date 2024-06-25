@@ -381,7 +381,7 @@ void getPacket(Packet packet) {
       if (millis() - previousMillisButton > (intervalButton * 2)) {  //Защита от залипапния кнопки
 
         if ((requestedTrack - track >= 1 && requestedTrack - track < 50) || requestedTrack - track < -50) {  // если следующий трек больше предыдушего или если переходим от последнего к первому
-          if (millis() > 5000) {
+          if (millis() > PowerUpBTDelay) {
             digitalWrite(SkipFBT, HIGH);
             previousMillisButton = millis();
             time01Sec = 0x00;  // Обнуляем таймеры
