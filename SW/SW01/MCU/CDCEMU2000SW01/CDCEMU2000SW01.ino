@@ -15,9 +15,11 @@ long previousMillis = 0;        // Время последней отправк�
 long previousMillisButton = 0;  // Время последнего нажатия кнопки
 long previousMillisLed = 0;     // Время последнего выключения светодиода
 long previousMillisTime = 0;    // Время в секундах
-long interval1s = 1000;
+
 long intervalLed = 20;  // Интервал работы светодиода
 long intervalButton = 250;
+long interval1s = 1000;
+long PowerUpBTDelay = 6000;
 
 #define RS485DE 2                   // Направление потока
 #define SOUNDON 3                   // Включение звука
@@ -33,6 +35,7 @@ long intervalButton = 250;
 #define PauseBT 7                   // Пин паузы
 #define SkipFBT 8                   // Пин переключения вперёд
 #define SkipBBT 9                   // Пин переключения назад
+#define PowerUpBT 12
 
 
 byte MSG_OUT[12] = { TALK_STATUS, MASTER_ADDR_OUT, ADDR, 0x07, 0x2B, 0x01, 0x01, 0x00, 0x01, 0x00, 0x01, 0x00 };          //шаблон сообщения, дефолтно в паузе первого диска
@@ -92,14 +95,20 @@ void setup() {
   pinMode(PauseBT, OUTPUT);
   pinMode(SkipFBT, OUTPUT);
   pinMode(SkipBBT, OUTPUT);
+  pinMode(PowerUpBT, OUTPUT);
   digitalWrite(PlayBT, LOW);
   digitalWrite(PauseBT, LOW);
   digitalWrite(SkipFBT, LOW);
   digitalWrite(SkipBBT, LOW);
+  digitalWrite(PowerUpBT, LOW);
   digitalWrite(LED_BUILTIN, HIGH);
 }
 
 void loop() {
+
+  if (millis() > intervalButton) {
+    digitalWrite(PowerUpBT, HIGH);
+  }
 
   if (millis() - previousMillisLed > intervalLed) {  // если время свечения светодиода вышло, выключаем
     digitalWrite(LED_BUILTIN, HIGH);
@@ -111,7 +120,7 @@ void loop() {
     digitalWrite(SkipFBT, LOW);
     digitalWrite(SkipBBT, LOW);
   }
-  if (reservedPlayBT == 1 && millis() > 5000) {  //исполнение отложенного запуска
+  if (reservedPlayBT == 1 && millis() > PowerUpBTDelay) {  //исполнение отложенного запуска
     digitalWrite(PlayBT, HIGH);
     previousMillisButton = millis();
     reservedPlayBT = 0;
@@ -121,7 +130,7 @@ void loop() {
   //======================================================================================================================
   // Подсчёт проигранного времени и включение звука
   if (MSG_OUT[5] == 0x81 || MSG_OUT[5] == 0x41) {          // Если идёт возспроизвдение
-    if (millis() > 5000) { digitalWrite(SOUNDON, HIGH); }  // Включить звук
+    if (millis() > PowerUpBTDelay) { digitalWrite(SOUNDON, HIGH); }  // Включить звук
     if (millis() - previousMillisTime > interval1s) {      // Если прошла секунда
 
       previousMillisTime = millis();  // Фиксируем время
@@ -318,7 +327,7 @@ void getPacket(Packet packet) {
     if (packet.data[0] == 0x62 && packet.data[1] == 0x03) {  // Open CDC MODE
       MSG_OUT[5] = 0x81;
       ChangeStatCD = 1;  //Запрос на смену состояния
-      if (millis() > 5000) {
+      if (millis() > PowerUpBTDelay) {
         digitalWrite(PlayBT, HIGH);
         previousMillisButton = millis();
       } else {
@@ -328,21 +337,21 @@ void getPacket(Packet packet) {
     if (packet.data[0] == 0x62 && packet.data[1] == 0x0A) {  // Close CDC MODE
       MSG_OUT[5] = 0x01;
       ChangeStatCD = 1;  //Запрос на смену состояния
-      if (millis() > 5000) {
+      if (millis() > PowerUpBTDelay) {
         digitalWrite(PauseBT, HIGH);
         previousMillisButton = millis();
       }
     }
     if (packet.data[0] == 0x62 && packet.data[1] == 0x0E) {  // Play normal
       MSG_OUT[5] = 0x81;
-      if (millis() > 5000) {
+      if (millis() > PowerUpBTDelay) {
         digitalWrite(PlayBT, HIGH);
         previousMillisButton = millis();
       }
     }
     if (packet.data[0] == 0x62 && packet.data[1] == 0x0B) {  // Play random
       MSG_OUT[5] = 0x41;
-      if (millis() > 5000) {
+      if (millis() > PowerUpBTDelay) {
         digitalWrite(PauseBT, HIGH);
       }
       previousMillisButton = millis();
@@ -382,7 +391,7 @@ void getPacket(Packet packet) {
           }
         }
         if ((requestedTrack - track <= -1 && requestedTrack - track > -50) || requestedTrack - track > 50) {  //если следующий трек меньше предыдущего или если переходим от первого к последнему
-          if (millis() > 5000) {
+          if (millis() > PowerUpBTDelay) {
             digitalWrite(SkipBBT, HIGH);
             previousMillisButton = millis();
             time01Sec = 0x00;  // Обнуляем таймеры
@@ -393,7 +402,7 @@ void getPacket(Packet packet) {
         }
         if (requestedTrack - track == 0) {       //Если запрашивается тот же самый трек
           if (time01Sec > 4 || time10Sec > 0) {  // Защита от перескоков
-            if (millis() > 5000) {
+            if (millis() > PowerUpBTDelay) {
               digitalWrite(SkipBBT, HIGH);
               previousMillisButton = millis();
               time01Sec = 0x00;  // Обнуляем таймеры
