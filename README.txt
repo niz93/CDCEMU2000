@@ -47,7 +47,8 @@ Scroll tracks forward/backward from the buttons on the device panel;
 Work with two devices at once (one is paused, played from the other).
 
 6) — How to connect?
-- <a href="https://www.drive2.ru/l/675409103295616189/">Mexico 2000. </a> <a href="https://www.drive2.ru/l/675406354516567265/">Grand Prix 2000</a>
+- https://www.drive2.ru/l/675409103295616189/ Mexico 2000. 
+- https://www.drive2.ru/l/675406354516567265/ Grand Prix 2000
 
 7) — Will the original changer work?
 — No, the source shifter is in development, which is an additional block, keep an eye on the update.
