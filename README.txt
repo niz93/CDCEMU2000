@@ -54,3 +54,9 @@ Work with two devices at once (one is paused, played from the other).
 — No, the source shifter is in development, which is an additional block, keep an eye on the update.
 
 In the future, it is planned to expand the capabilities, display text (for example, the name of the track and the band)
+
+
+
+## Support
+
+For support, email 193niz@gmail.com
