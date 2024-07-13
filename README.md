@@ -30,11 +30,12 @@ It should work, not tested: Becker BMW BAVARIA C Professional BE0776, Becker Mex
 #### If you know of devices compatible with this changer, please write
 
 #### 3) — My device is not in the list, it is younger and there is a CD changer input, will it work?
-— NO, it will only work if the above—mentioned changer is supported from the factory
-- I have a Grand Prix 2000 without a connector for the changer, is it possible to add?
-— Probably not, rather than yes, there has not been any experience of refinement yet
-— I have Avus 2000/Europa 2000, will it work?
-— NO, IT'S NOT
+- NO, it will only work if the above—mentioned changer is supported from the factory
+
+#### - I have a Grand Prix 2000 without a connector for the changer, is it possible to add?
+- Probably not, rather than yes, there has not been any experience of refinement yet
+#### - I have Avus 2000/Europa 2000, will it work?
+- NO, IT'S NOT
 
 #### 4) — Do I need to modify the device to install the module?
 — The module is connected to the standard connectors of the device, no modifications are required, just attach the module to the body and connect the connectors. An interblock cable of the required length is included.
