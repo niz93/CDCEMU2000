@@ -32,9 +32,9 @@ It should work, not tested: Becker BMW BAVARIA C Professional BE0776, Becker Mex
 #### 3) — My device is not in the list, it is younger and there is a CD changer input, will it work?
 — NO, it will only work if the above—mentioned changer is supported from the factory
 
-#### - I have a Grand Prix 2000 without a connector for the changer, is it possible to add?
+#### — I have a Grand Prix 2000 without a connector for the changer, is it possible to add?
 — Probably not, rather than yes, there has not been any experience of refinement yet
-#### - I have Avus 2000/Europa 2000, will it work?
+#### — I have Avus 2000/Europa 2000, will it work?
 — NO, IT'S NOT
 
 #### 4) — Do I need to modify the device to install the module?
@@ -48,8 +48,8 @@ It should work, not tested: Becker BMW BAVARIA C Professional BE0776, Becker Mex
 — Work with two devices at once (one is paused, played from the other).
 
 #### 6) — How to connect?
-- [Mexico 2000](https://www.drive2.ru/l/675409103295616189/)
-- [Grand Prix 2000](https://www.drive2.ru/l/675406354516567265/)
+— [Mexico 2000](https://www.drive2.ru/l/675409103295616189/)
+— [Grand Prix 2000](https://www.drive2.ru/l/675406354516567265/)
 
 #### 7) — Will the original changer work?
 — No, the source shifter is in development, which is an additional block, keep an eye on the update.
