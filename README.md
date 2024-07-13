@@ -42,13 +42,18 @@ It should work, not tested: Becker BMW BAVARIA C Professional BE0776, Becker Mex
 
 #### 5) — What can the module do?
 — Start playback when choosing a changer;
+
 — Pause when closing (radio or cassette selection);
+
 — Pause/continue playing when the Random button is pressed;
+
 — Scroll tracks forward/backward from the buttons on the device panel;
+
 — Work with two devices at once (one is paused, played from the other).
 
 #### 6) — How to connect?
 — [Mexico 2000](https://www.drive2.ru/l/675409103295616189/)
+
 — [Grand Prix 2000](https://www.drive2.ru/l/675406354516567265/)
 
 #### 7) — Will the original changer work?
