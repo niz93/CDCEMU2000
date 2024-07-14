@@ -1,5 +1,7 @@
 
 # Emulator CD changer Becker BE 980, BE 982
+
+This is Emulator Becker Silverstone 10 CD Changer CD-Wechsler BE0980 or BMW Bavaria CD 10 Selektion Becker BE0982 CD-Wechsler for Becker car radio
  
 ## Tested:
 
