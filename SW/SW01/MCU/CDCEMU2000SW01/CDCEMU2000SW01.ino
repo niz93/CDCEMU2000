@@ -9,7 +9,7 @@
   https://github.com/niz93/CDCEMU2000
  */
 
-
+#include <avr/wdt.h>
 
 
 long previousMillisMSG = 0;      // Время последней отправки
@@ -92,6 +92,8 @@ void getPacket(Packet packet);
 
 void setup() {
 
+  wdt_enable (WDTO_2S);
+
   pinMode(RS485DE, OUTPUT);
   digitalWrite(RS485DE, LOW);
   Serial.begin(4800, SERIAL_8E2);  // initialize both serial ports:
@@ -173,75 +175,75 @@ void loop() {
   }
 
   //======================================================================================================================
-   if (Serial.available() == 0) {// Смена состояния
-  if (SendMagInfo > 0 && (millis() - previousMillisMSG > intervalMSG)) {  //Отправка информации о загруженных дисках
-    
-    digitalWrite(RS485DE, HIGH);    // Режим передачи
-    for (byte i = 0; i < 8; i++) {  //
-      Serial.write(MSG_Mag1CD[i]);  // Передача данных о загруженных дисках
-    }                               //
-    Serial.flush();                 // Ждём окончание передачи
-    digitalWrite(RS485DE, LOW);     // Режим приёма
-    previousMillisMSG = millis();
-    SendInfoCD = 1;                 // Запрос отправку информации о диске
-    SendMagInfo = 0;
-  }
-  
- // if (SendMagInfo = 1 && (millis() - previousMillisOPENCDC > (10000))) { SendMagInfo = 0; }  // Используется только для BE1801, она не умеет запрашивать количество загруженных дисков, сброс счётчика вызова Open CDC по таймауту
+  if (Serial.available() == 0) {                                            // Смена состояния
+    if (SendMagInfo > 0 && (millis() - previousMillisMSG > intervalMSG)) {  //Отправка информации о загруженных дисках
 
-  if (SendInfoCD > 0 && (millis() - previousMillisMSG > intervalMSG)) {  // Отправка информации о диске
-  
-    digitalWrite(RS485DE, HIGH);     // Режим передачи
-    for (byte i = 0; i < 12; i++) {  //
-      Serial.write(MSG_CDInfo[i]);   // Передача данных о загруженном диске
-    }                                //
-    Serial.flush();                  // Ждём окончание передачи
-    digitalWrite(RS485DE, LOW);      // Режим приёма
-    previousMillisMSG = millis();
-    ChangeStatCD = 1;                // Запрос на смену состояния
-    SendInfoCD = 0;
-  }
-
-  if (ChangeStatCD > 0 && SendMagInfo == 0 && (millis() - previousMillisMSG > intervalMSG)) {  //Смена состояния.
-    
-    digitalWrite(RS485DE, HIGH);  //Режим передачи
-
-    for (byte i = 1; i < 11; i++) {
-      CRCa = (CRCa ^ MSG_ChangeState[i]);
-      MSG_ChangeState[11] = CRCa;
+      digitalWrite(RS485DE, HIGH);    // Режим передачи
+      for (byte i = 0; i < 8; i++) {  //
+        Serial.write(MSG_Mag1CD[i]);  // Передача данных о загруженных дисках
+      }                               //
+      Serial.flush();                 // Ждём окончание передачи
+      digitalWrite(RS485DE, LOW);     // Режим приёма
+      previousMillisMSG = millis();
+      SendInfoCD = 1;  // Запрос отправку информации о диске
+      SendMagInfo = 0;
     }
 
-    for (byte i = 0; i < 12; i++) {
-      Serial.write(MSG_ChangeState[i]);
-    }
-    Serial.flush();              // Ждём окончание передачи
-    digitalWrite(RS485DE, LOW);  // Режим приёма
-    previousMillisMSG = millis();
-    CRCa = 0xFF;
-    ChangeStatCD = 0;
-    digitalWrite(LED_BUILTIN, HIGH);
-  }
-  //======================================================================================================================
-  // Отправка сообщения
-  if ((millis() - previousMillisMSG > intervalMSG) && SendMagInfo == 0 && SendInfoCD == 0 && ChangeStatCD == 0) {
-    
-    digitalWrite(RS485DE, HIGH);  // Режим передачи
 
-    for (byte i = 1; i < 11; i++) {
-      CRCa = CRCa ^ MSG_OUT[i];
-      MSG_OUT[11] = CRCa;
+    if (SendInfoCD > 0 && (millis() - previousMillisMSG > intervalMSG)) {  // Отправка информации о диске
+
+      digitalWrite(RS485DE, HIGH);     // Режим передачи
+      for (byte i = 0; i < 12; i++) {  //
+        Serial.write(MSG_CDInfo[i]);   // Передача данных о загруженном диске
+      }                                //
+      Serial.flush();                  // Ждём окончание передачи
+      digitalWrite(RS485DE, LOW);      // Режим приёма
+      previousMillisMSG = millis();
+      ChangeStatCD = 1;  // Запрос на смену состояния
+      SendInfoCD = 0;
     }
 
-    for (byte i = 0; i < 12; i++) {
-      Serial.write(MSG_OUT[i]);
+    if (ChangeStatCD > 0 && SendMagInfo == 0 && (millis() - previousMillisMSG > intervalMSG)) {  //Смена состояния.
+
+      digitalWrite(RS485DE, HIGH);  //Режим передачи
+
+      for (byte i = 1; i < 11; i++) {
+        CRCa = (CRCa ^ MSG_ChangeState[i]);
+        MSG_ChangeState[11] = CRCa;
+      }
+
+      for (byte i = 0; i < 12; i++) {
+        Serial.write(MSG_ChangeState[i]);
+      }
+      Serial.flush();              // Ждём окончание передачи
+      digitalWrite(RS485DE, LOW);  // Режим приёма
+      previousMillisMSG = millis();
+      CRCa = 0xFF;
+      ChangeStatCD = 0;
+      digitalWrite(LED_BUILTIN, HIGH);
     }
-    Serial.flush();              // Ждём окончание передачи
-    digitalWrite(RS485DE, LOW);  // Режим приёма
-    previousMillisMSG = millis();
-    CRCa = 0xFF;
-    digitalWrite(LED_BUILTIN, LOW);
+    //======================================================================================================================
+    // Отправка сообщения
+    if ((millis() - previousMillisMSG > intervalMSG) && SendMagInfo == 0 && SendInfoCD == 0 && ChangeStatCD == 0) {
+
+      digitalWrite(RS485DE, HIGH);  // Режим передачи
+
+      for (byte i = 1; i < 11; i++) {
+        CRCa = CRCa ^ MSG_OUT[i];
+        MSG_OUT[11] = CRCa;
+      }
+
+      for (byte i = 0; i < 12; i++) {
+        Serial.write(MSG_OUT[i]);
+      }
+      Serial.flush();              // Ждём окончание передачи
+      digitalWrite(RS485DE, LOW);  // Режим приёма
+      previousMillisMSG = millis();
+      CRCa = 0xFF;
+      digitalWrite(LED_BUILTIN, LOW);
+      wdt_reset();// Reset Wathdog
+    }
   }
-   }
   //======================================================================================================================
   //Защита от переполнения треков
   if ((millis() - previousMillisMSG > (intervalMSG - 1)) && (MSG_OUT[6] == 0x99)) {
@@ -323,10 +325,10 @@ void processReceive(byte *data, int length) {
           }
           bool isCRCOK = CRC == crc;
           if (isCRCOK) {
-            digitalWrite(RS485DE, HIGH);            // Режим передачи
-            Serial.write(APPROVE_STATUS);           // Подтверждаем приём
-            Serial.flush();                         // Ждём окончание передачи
-            digitalWrite(RS485DE, LOW);             // Режим приёма
+            digitalWrite(RS485DE, HIGH);   // Режим передачи
+            Serial.write(APPROVE_STATUS);  // Подтверждаем приём
+            Serial.flush();                // Ждём окончание передачи
+            digitalWrite(RS485DE, LOW);    // Режим приёма
             previousMillisMSG = (millis() - intervalMSGafterAPPROVE);
             packet.dataLength = waitedRawDataSize;  // Сохраняем длину пакета
             getPacket(packet);                      // Сохраняем пакет
@@ -350,10 +352,10 @@ void getPacket(Packet packet) {
   //======================================================================================================================
   if (packet.dataLength == 0x02) {                           // когда на входе 2 байта дата
     if (packet.data[0] == 0x62 && packet.data[1] == 0x03) {  // Open CDC MODE
-      SendMagInfo = 1;                         // Используется только для BE1801, она не умеет запрашивать количество загруженных дисков, при накоплении счётчика Open CDC > 1 происходит отправка сообщения с количеством дисков
-     // previousMillisOPENCDC = millis();                      // Используется только для BE1801, она не умеет запрашивать количество загруженных дисков, фиксация времени, для сброса счётчика по таймауту
+      SendMagInfo = 1;                                       // Используется только для BE1801, она не умеет запрашивать количество загруженных дисков, при накоплении счётчика Open CDC > 1 происходит отправка сообщения с количеством дисков
+                                                             // previousMillisOPENCDC = millis();                      // Используется только для BE1801, она не умеет запрашивать количество загруженных дисков, фиксация времени, для сброса счётчика по таймауту
       MSG_OUT[5] = 0x81;
-     // ChangeStatCD = 1;  //Запрос на смену состояния
+      // ChangeStatCD = 1;  //Запрос на смену состояния
       if (millis() > PowerUpBTDelay) {
         digitalWrite(PlayBT, HIGH);
         previousMillisButton = millis();
@@ -449,7 +451,7 @@ void getPacket(Packet packet) {
       Serial.flush();                                        // Ждём окончание передачи
       digitalWrite(RS485DE, LOW);                            // Режим приёма
       previousMillisMSG = millis();
-      SendInfoCD = 1;                                        // Запрос отправку информации о диске
+      SendInfoCD = 1;  // Запрос отправку информации о диске
     }
   }
   //======================================================================================================================
