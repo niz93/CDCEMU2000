@@ -92,7 +92,7 @@ void getPacket(Packet packet);
 
 void setup() {
 
-  wdt_enable (WDTO_2S);
+  wdt_enable(WDTO_2S);
 
   pinMode(RS485DE, OUTPUT);
   digitalWrite(RS485DE, LOW);
@@ -175,36 +175,36 @@ void loop() {
   }
 
   //======================================================================================================================
-  if (Serial.available() == 0) {                                            // Смена состояния
-    if (SendMagInfo > 0 && (millis() - previousMillisMSG > intervalMSG)) {  //Отправка информации о загруженных дисках
-
+  if (Serial.available() == 0) {                                             // Смена состояния
+    if (SendMagInfo > 0 && (millis() - previousMillisMSG >= intervalMSG)) {  //Отправка информации о загруженных дисках
+      previousMillisMSG = millis();
       digitalWrite(RS485DE, HIGH);    // Режим передачи
       for (byte i = 0; i < 8; i++) {  //
         Serial.write(MSG_Mag1CD[i]);  // Передача данных о загруженных дисках
       }                               //
       Serial.flush();                 // Ждём окончание передачи
       digitalWrite(RS485DE, LOW);     // Режим приёма
-      previousMillisMSG = millis();
+
       SendInfoCD = 1;  // Запрос отправку информации о диске
       SendMagInfo = 0;
     }
 
 
-    if (SendInfoCD > 0 && (millis() - previousMillisMSG > intervalMSG)) {  // Отправка информации о диске
-
+    if (SendInfoCD > 0 && (millis() - previousMillisMSG >= intervalMSG)) {  // Отправка информации о диске
+      previousMillisMSG = millis();
       digitalWrite(RS485DE, HIGH);     // Режим передачи
       for (byte i = 0; i < 12; i++) {  //
         Serial.write(MSG_CDInfo[i]);   // Передача данных о загруженном диске
       }                                //
       Serial.flush();                  // Ждём окончание передачи
       digitalWrite(RS485DE, LOW);      // Режим приёма
-      previousMillisMSG = millis();
+
       ChangeStatCD = 1;  // Запрос на смену состояния
       SendInfoCD = 0;
     }
 
-    if (ChangeStatCD > 0 && SendMagInfo == 0 && (millis() - previousMillisMSG > intervalMSG)) {  //Смена состояния.
-
+    if (ChangeStatCD > 0 && SendMagInfo == 0 && (millis() - previousMillisMSG >= intervalMSG)) {  //Смена состояния.
+      previousMillisMSG = millis();
       digitalWrite(RS485DE, HIGH);  //Режим передачи
 
       for (byte i = 1; i < 11; i++) {
@@ -217,15 +217,15 @@ void loop() {
       }
       Serial.flush();              // Ждём окончание передачи
       digitalWrite(RS485DE, LOW);  // Режим приёма
-      previousMillisMSG = millis();
+
       CRCa = 0xFF;
       ChangeStatCD = 0;
-      digitalWrite(LED_BUILTIN, HIGH);
+      digitalWrite(LED_BUILTIN, LOW);
     }
     //======================================================================================================================
     // Отправка сообщения
-    if ((millis() - previousMillisMSG > intervalMSG) && SendMagInfo == 0 && SendInfoCD == 0 && ChangeStatCD == 0) {
-
+    if ((millis() - previousMillisMSG >= intervalMSG) && SendMagInfo == 0 && SendInfoCD == 0 && ChangeStatCD == 0) {
+      previousMillisMSG = millis();
       digitalWrite(RS485DE, HIGH);  // Режим передачи
 
       for (byte i = 1; i < 11; i++) {
@@ -238,21 +238,18 @@ void loop() {
       }
       Serial.flush();              // Ждём окончание передачи
       digitalWrite(RS485DE, LOW);  // Режим приёма
-      previousMillisMSG = millis();
       CRCa = 0xFF;
       digitalWrite(LED_BUILTIN, LOW);
-      wdt_reset();// Reset Wathdog
+      wdt_reset();  // Reset Wathdog
     }
   }
   //======================================================================================================================
   //Защита от переполнения треков
-  if ((millis() - previousMillisMSG > (intervalMSG - 1)) && (MSG_OUT[6] == 0x99)) {
+  if ((millis() - previousMillisMSG >= (intervalMSG - 1)) && (MSG_OUT[6] == 0x99)) {
     MSG_OUT[6] = 0x01;
     MSG_ChangeState[6] = 0x01;
     ChangeStatCD = 1;  // Запрос на смену состояния
   }
-
-
   //======================================================================================================================
   if (Serial.available() > 0) {
     byte currentByte = Serial.read();
@@ -291,13 +288,13 @@ void processReceive(byte *data, int length) {
       //======================================================================================================================
       case RecieveState::WAIT_DATA_SIZE:
         {
-          waitedRawDataSize = currentByte;
-          // Слишком большая длина пакета
+          waitedRawDataSize = currentByte;  // Слишком большая длина пакета
           if (waitedRawDataSize > MAX_DATA_SIZE) {
             receiveState = RecieveState::WAIT_ADDR;
+          } else {
+            receiveState = RecieveState::WAIT_DATA;
+            packet.dataLength = waitedRawDataSize;
           }
-          receiveState = RecieveState::WAIT_DATA;
-          packet.dataLength = waitedRawDataSize;
           break;
         }
       //======================================================================================================================
@@ -352,9 +349,9 @@ void getPacket(Packet packet) {
   //======================================================================================================================
   if (packet.dataLength == 0x02) {                           // когда на входе 2 байта дата
     if (packet.data[0] == 0x62 && packet.data[1] == 0x03) {  // Open CDC MODE
-      SendMagInfo = 1;                                       // Используется только для BE1801, она не умеет запрашивать количество загруженных дисков, при накоплении счётчика Open CDC > 1 происходит отправка сообщения с количеством дисков
-                                                             // previousMillisOPENCDC = millis();                      // Используется только для BE1801, она не умеет запрашивать количество загруженных дисков, фиксация времени, для сброса счётчика по таймауту
+
       MSG_OUT[5] = 0x81;
+      SendMagInfo = 1;
       // ChangeStatCD = 1;  //Запрос на смену состояния
       if (millis() > PowerUpBTDelay) {
         digitalWrite(PlayBT, HIGH);
@@ -389,7 +386,7 @@ void getPacket(Packet packet) {
   //======================================================================================================================
   if (packet.dataLength == 0x03) {                                                                                 // Когда на входе 3 байта дата
     if (packet.data[0] == 0x62 && packet.data[1] == 0x0C && (packet.data[2] == 0x07 || packet.data[2] == 0x08)) {  // Сколько дисков загружено?
-      SendMagInfo = 3;                                                                                             // Запрос отправку информации о загруженных дисках
+      SendMagInfo = 1;                                                                                             // Запрос отправку информации о загруженных дисках
     }
   }
   //======================================================================================================================
@@ -443,6 +440,7 @@ void getPacket(Packet packet) {
   }
   //======================================================================================================================
   if (packet.dataLength == 0x05) {                           // Когда на входе 5 байт дата
+    previousMillisMSG = millis();                            //
     if (packet.data[0] == 0x62 && packet.data[1] == 0x10) {  // Запроса на переключение диска
       digitalWrite(RS485DE, HIGH);                           // Режим передачи
       for (byte i = 0; i < 12; i++) {                        //
@@ -450,8 +448,7 @@ void getPacket(Packet packet) {
       }                                                      //
       Serial.flush();                                        // Ждём окончание передачи
       digitalWrite(RS485DE, LOW);                            // Режим приёма
-      previousMillisMSG = millis();
-      SendInfoCD = 1;  // Запрос отправку информации о диске
+      SendInfoCD = 1;                                        // Запрос отправку информации о диске
     }
   }
   //======================================================================================================================
