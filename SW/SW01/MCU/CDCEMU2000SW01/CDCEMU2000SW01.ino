@@ -118,7 +118,7 @@ void setup() {
 void loop() {
   //======================================================================================================================
   // Отключение активных GPIO
-
+  wdt_reset();                                                       // Reset Wathdog
   if (millis() > intervalButton) { digitalWrite(PowerUpBT, HIGH); }  // Задержка включения BT модуля
 
   if (millis() - previousMillisLed > intervalLed) { digitalWrite(LED_BUILTIN, HIGH); }  // Если время свечения светодиода вышло, выключаем
@@ -240,12 +240,11 @@ void loop() {
       digitalWrite(RS485DE, LOW);  // Режим приёма
       CRCa = 0xFF;
       digitalWrite(LED_BUILTIN, LOW);
-      wdt_reset();  // Reset Wathdog
     }
   }
   //======================================================================================================================
   //Защита от переполнения треков
-  if ((millis() - previousMillisMSG >= (intervalMSG - 1)) && (MSG_OUT[6] == 0x99)) {
+  if ((millis() - previousMillisMSG) >= intervalMSG && MSG_OUT[6] == 0x99 && ChangeStatCD == 0 ) {
     MSG_OUT[6] = 0x01;
     MSG_ChangeState[6] = 0x01;
     ChangeStatCD = 1;  // Запрос на смену состояния
