@@ -11,7 +11,7 @@
 
 #include <avr/wdt.h>
 
-
+long previousMillisBUSY = 0;
 long previousMillisMSG = 0;      // Время последней отправки
 long previousMillisOPENCDC = 0;  // Время последнего открытия CDC
 long previousMillisButton = 0;   // Время последнего нажатия кнопки
@@ -21,8 +21,9 @@ long previousMillisTime = 0;     // Время в секундах
 
 long intervalLed = 20;  // Интервал работы светодиода
 long intervalButton = 65;
-long intervalMSG = 300;
-long intervalMSGafterAPPROVE = intervalMSG - 5;
+long intervalMSG = 500;
+long intervalBUSY = 15;
+long intervalMSGafterAPPROVE = intervalMSG - intervalBUSY;
 long interval1s = 1000;
 long PowerUpBTDelay = 7000;
 
@@ -118,7 +119,7 @@ void setup() {
 void loop() {
   //======================================================================================================================
   // Отключение активных GPIO
-  wdt_reset();                                                       // Reset Wathdog
+
   if (millis() > intervalButton) { digitalWrite(PowerUpBT, HIGH); }  // Задержка включения BT модуля
 
   if (millis() - previousMillisLed > intervalLed) { digitalWrite(LED_BUILTIN, HIGH); }  // Если время свечения светодиода вышло, выключаем
@@ -173,40 +174,47 @@ void loop() {
   if (MSG_OUT[5] == 0x01) {      // Если воспроизвдение остановлено
     digitalWrite(SOUNDON, LOW);  // Выключить звук
   }
-
   //======================================================================================================================
-  if (Serial.available() == 0) {                                             // Смена состояния
-    if (SendMagInfo > 0 && (millis() - previousMillisMSG >= intervalMSG)) {  //Отправка информации о загруженных дисках
-      previousMillisMSG = millis();
+  // Check serial
+  if (Serial.available() > 0) {
+    byte currentByte = Serial.read();
+    processReceive(&currentByte, 1);
+    previousMillisBUSY = millis();
+  }
+  //======================================================================================================================
+  // Change status
+  if ((Serial.available() == 0) && (millis() - previousMillisBUSY >= intervalBUSY)) {
+    wdt_reset();                                                              // Reset Wathdog
+    if (SendMagInfo > 0 && (millis() - previousMillisMSG >= intervalBUSY)) {  // Отправка информации о загруженных дисках
+
       digitalWrite(RS485DE, HIGH);    // Режим передачи
       for (byte i = 0; i < 8; i++) {  //
         Serial.write(MSG_Mag1CD[i]);  // Передача данных о загруженных дисках
       }                               //
       Serial.flush();                 // Ждём окончание передачи
       digitalWrite(RS485DE, LOW);     // Режим приёма
-
+      previousMillisMSG = millis();
       SendInfoCD = 1;  // Запрос отправку информации о диске
       SendMagInfo = 0;
     }
 
 
-    if (SendInfoCD > 0 && (millis() - previousMillisMSG >= intervalMSG)) {  // Отправка информации о диске
-      previousMillisMSG = millis();
+    if (SendInfoCD > 0 && (millis() - previousMillisMSG >= intervalBUSY)) {  // Отправка информации о диске
+
       digitalWrite(RS485DE, HIGH);     // Режим передачи
       for (byte i = 0; i < 12; i++) {  //
         Serial.write(MSG_CDInfo[i]);   // Передача данных о загруженном диске
       }                                //
       Serial.flush();                  // Ждём окончание передачи
       digitalWrite(RS485DE, LOW);      // Режим приёма
-
+      previousMillisMSG = millis();
       ChangeStatCD = 1;  // Запрос на смену состояния
       SendInfoCD = 0;
     }
 
-    if (ChangeStatCD > 0 && SendMagInfo == 0 && (millis() - previousMillisMSG >= intervalMSG)) {  //Смена состояния.
-      previousMillisMSG = millis();
-      digitalWrite(RS485DE, HIGH);  //Режим передачи
+    if (ChangeStatCD > 0 && SendMagInfo == 0 && (millis() - previousMillisMSG >= intervalBUSY)) {  //Смена состояния.
 
+      digitalWrite(RS485DE, HIGH);  //Режим передачи
       for (byte i = 1; i < 11; i++) {
         CRCa = (CRCa ^ MSG_ChangeState[i]);
         MSG_ChangeState[11] = CRCa;
@@ -217,7 +225,7 @@ void loop() {
       }
       Serial.flush();              // Ждём окончание передачи
       digitalWrite(RS485DE, LOW);  // Режим приёма
-
+      previousMillisMSG = millis();
       CRCa = 0xFF;
       ChangeStatCD = 0;
       digitalWrite(LED_BUILTIN, LOW);
@@ -244,16 +252,12 @@ void loop() {
   }
   //======================================================================================================================
   //Защита от переполнения треков
-  if ((millis() - previousMillisMSG) >= intervalMSG && MSG_OUT[6] == 0x99 && ChangeStatCD == 0 ) {
+  if ((millis() - previousMillisMSG) >= intervalMSG && MSG_OUT[6] == 0x99 && ChangeStatCD == 0) {
     MSG_OUT[6] = 0x01;
     MSG_ChangeState[6] = 0x01;
     ChangeStatCD = 1;  // Запрос на смену состояния
   }
   //======================================================================================================================
-  if (Serial.available() > 0) {
-    byte currentByte = Serial.read();
-    processReceive(&currentByte, 1);
-  }
 }
 
 /**
@@ -321,6 +325,7 @@ void processReceive(byte *data, int length) {
           }
           bool isCRCOK = CRC == crc;
           if (isCRCOK) {
+            delayMicroseconds(150);
             digitalWrite(RS485DE, HIGH);   // Режим передачи
             Serial.write(APPROVE_STATUS);  // Подтверждаем приём
             Serial.flush();                // Ждём окончание передачи
