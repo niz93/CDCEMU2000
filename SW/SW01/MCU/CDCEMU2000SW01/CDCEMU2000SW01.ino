@@ -11,44 +11,43 @@
 
 #include <avr/wdt.h>
 
-long previousMillisBUSY = 0;
-long previousMillisMSG = 0;      // Время последней отправки
-long previousMillisOPENCDC = 0;  // Время последнего открытия CDC
-long previousMillisButton = 0;   // Время последнего нажатия кнопки
-long previousMillisLed = 0;      // Время последнего выключения светодиода
-long previousMillisTime = 0;     // Время в секундах
+long previousMillisBUSY = 0;    // The time of the last received message
+long previousMillisMSG = 0;     // The time of the last sent message
+long previousMillisButton = 0;  // The time of the last button press
+long previousMillisLed = 0;     // The time when the LED was last turned on
+long previousMillisTime = 0;    // Time in seconds
 
-byte intervalBUSYline = 15;
-byte intervalLed = 20;  // Интервал работы светодиода
-byte intervalButton = 65;
-unsigned int intervalMSG = 500;
-unsigned int interval1s = 1000;
-unsigned int PowerUpBTDelay = 7000;
-
-
-#define RS485DE 2                   // Направление потока
-#define SOUNDON 3                   // Включение звука
-#define ADDR (byte)0x32             // Адрес приёмника
-#define ADDR0 (byte)0x30            // Адрес приёмника, используется только в Grand Prix 2000
-#define MASTER_ADDR (byte)0x11      // Адрес источника
-#define MASTER_ADDR_OUT (byte)0x10  // Адрес получателя
-#define TALK_STATUS (byte)0xFC      // Подверждение передачи
-#define APPROVE_STATUS (byte)0x0F   // Подверждение приёма
-#define MAX_DATA_SIZE 5             // Максимальная длина получаемого сообщения
-#define MAX_TRACK (byte)0x99        // Максимальный номер трека
-#define PlayBT 6                    // Пин воспроизведения
-#define PauseBT 7                   // Пин паузы
-#define SkipFBT 8                   // Пин переключения вперёд
-#define SkipBBT 9                   // Пин переключения назад
-#define PowerUpBT 12                // Пин включения BT
+byte intervalBUSYline = 15;          // BUSY timeout rs485 line
+byte intervalLed = 20;               // LED interval
+byte intervalButton = 65;            // Button interval
+unsigned int intervalMSG = 500;      // Timeout TX
+unsigned int interval1s = 1000;      // 
+unsigned int PowerUpBTDelay = 7000;  // Timeout power up BT module
 
 
+#define RS485DE 2                   // Flow direction
+#define SOUNDON 3                   // Turning on the sound relay
+#define ADDR (byte)0x32             // Address of the receiver
+#define ADDR0 (byte)0x30            // Address of the receiver , it is used only in Grand Prix 2000
+#define MASTER_ADDR (byte)0x11      // Address source 
+#define MASTER_ADDR_OUT (byte)0x10  // Address recipient's
+#define TALK_STATUS (byte)0xFC      // Transmission start status
+#define APPROVE_STATUS (byte)0x0F   // Reception data package status
+#define MAX_DATA_SIZE 5             // Max long data package
+#define MAX_TRACK (byte)0x99        // Max track number
+#define PlayBT 6                    // Playback pin
+#define PauseBT 7                   // Pause pin
+#define SkipFBT 8                   // Forward pin
+#define SkipBBT 9                   // Backward  pin
+#define PowerUpBT 12                // Power up BT pin
 
-byte MSG_Mag1CD[8] = { TALK_STATUS, MASTER_ADDR_OUT, ADDR, 0x03, 0x2C, 0x20, 0x01, 0xD3 };                                //Загружен 1 диск
-byte MSG_CDInfo[12] = { TALK_STATUS, MASTER_ADDR_OUT, ADDR, 0x07, 0x2B, 0xA1, 0x01, MAX_TRACK, 0x60, 0x59, 0x00, 0xF1 };  //Данные о треках на диске
-byte MSG_ChangeState[12] = { TALK_STATUS, MASTER_ADDR_OUT, ADDR, 0x07, 0x2B, 0xB1, 0x01, 0x00, 0x00, 0x00, 0x01, 0x40 };  //Смена состояний
-byte MSG_CDLoad[12] = { TALK_STATUS, MASTER_ADDR_OUT, ADDR, 0x07, 0x2B, 0x01, 0x01, 0x00, 0x00, 0x00, 0x01, 0x89 };       //Загрузка диска
-byte MSG_OUT[12] = { TALK_STATUS, MASTER_ADDR_OUT, ADDR, 0x07, 0x2B, 0x01, 0x01, 0x00, 0x01, 0x00, 0x01, 0x00 };          //Шаблон сообщения, дефолтно в паузе первого диска
+
+
+byte MSG_Mag1CD[8] = { TALK_STATUS, MASTER_ADDR_OUT, ADDR, 0x03, 0x2C, 0x20, 0x01, 0xD3 };                                // 1 disk is loaded
+byte MSG_CDInfo[12] = { TALK_STATUS, MASTER_ADDR_OUT, ADDR, 0x07, 0x2B, 0xA1, 0x01, MAX_TRACK, 0x60, 0x59, 0x00, 0xF1 };  // Track data on the disc
+byte MSG_ChangeState[12] = { TALK_STATUS, MASTER_ADDR_OUT, ADDR, 0x07, 0x2B, 0xB1, 0x01, 0x00, 0x00, 0x00, 0x01, 0x40 };  // Change status
+byte MSG_CDLoad[12] = { TALK_STATUS, MASTER_ADDR_OUT, ADDR, 0x07, 0x2B, 0x01, 0x01, 0x00, 0x00, 0x00, 0x01, 0x89 };       // Loading disk
+byte MSG_OUT[12] = { TALK_STATUS, MASTER_ADDR_OUT, ADDR, 0x07, 0x2B, 0x01, 0x01, 0x00, 0x01, 0x00, 0x01, 0x00 };          // Message template, default in the pause of the 1 disk
 
 
 bool SendInfoCD = 0;
@@ -82,7 +81,7 @@ struct Packet {
 
 byte rawData[MAX_DATA_SIZE];
 byte waitedRawDataSize = 0;
-byte dataCounter = 0;  // Счетчик приема поля data
+byte dataCounter = 0;  // Counter for receiving the data field
 
 RecieveState receiveState = RecieveState::WAIT_ADDR;
 
@@ -182,7 +181,7 @@ void loop() {
   //======================================================================================================================
   // Change status
   if ((Serial.available() == 0) && (millis() - previousMillisBUSY >= intervalBUSYline)) {
-   
+
     if (SendMagInfo > 0 && (millis() - previousMillisMSG >= intervalBUSYline)) {  // Отправка информации о загруженных дисках
 
       digitalWrite(RS485DE, HIGH);    // Режим передачи
@@ -246,7 +245,7 @@ void loop() {
       digitalWrite(RS485DE, LOW);  // Режим приёма
       CRCa = 0xFF;
       digitalWrite(LED_BUILTIN, LOW);
-       wdt_reset();                                                              // Reset Wathdog
+      wdt_reset();  // Reset Wathdog
     }
   }
   //======================================================================================================================
@@ -325,11 +324,11 @@ void processReceive(byte *data, int length) {
           bool isCRCOK = CRC == crc;
           if (isCRCOK) {
             delayMicroseconds(150);
-            digitalWrite(RS485DE, HIGH);   // Режим передачи
-            Serial.write(APPROVE_STATUS);  // Подтверждаем приём
-            Serial.flush();                // Ждём окончание передачи
-            digitalWrite(RS485DE, LOW);    // Режим приёма
-           // previousMillisMSG = millis();
+            digitalWrite(RS485DE, HIGH);            // Режим передачи
+            Serial.write(APPROVE_STATUS);           // Подтверждаем приём
+            Serial.flush();                         // Ждём окончание передачи
+            digitalWrite(RS485DE, LOW);             // Режим приёма
+                                                    // previousMillisMSG = millis();
             packet.dataLength = waitedRawDataSize;  // Сохраняем длину пакета
             getPacket(packet);                      // Сохраняем пакет
           }
