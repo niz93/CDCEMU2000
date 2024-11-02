@@ -18,14 +18,12 @@ long previousMillisButton = 0;   // Время последнего нажати
 long previousMillisLed = 0;      // Время последнего выключения светодиода
 long previousMillisTime = 0;     // Время в секундах
 
-
-long intervalLed = 20;  // Интервал работы светодиода
-long intervalButton = 65;
-long intervalMSG = 500;
-long intervalBUSY = 15;
-long intervalMSGafterAPPROVE = intervalMSG - intervalBUSY;
-long interval1s = 1000;
-long PowerUpBTDelay = 7000;
+byte intervalBUSYline = 15;
+byte intervalLed = 20;  // Интервал работы светодиода
+byte intervalButton = 65;
+unsigned int intervalMSG = 500;
+unsigned int interval1s = 1000;
+unsigned int PowerUpBTDelay = 7000;
 
 
 #define RS485DE 2                   // Направление потока
@@ -177,15 +175,15 @@ void loop() {
   //======================================================================================================================
   // Check serial
   if (Serial.available() > 0) {
+    previousMillisBUSY = millis();
     byte currentByte = Serial.read();
     processReceive(&currentByte, 1);
-    previousMillisBUSY = millis();
   }
   //======================================================================================================================
   // Change status
-  if ((Serial.available() == 0) && (millis() - previousMillisBUSY >= intervalBUSY)) {
-    wdt_reset();                                                              // Reset Wathdog
-    if (SendMagInfo > 0 && (millis() - previousMillisMSG >= intervalBUSY)) {  // Отправка информации о загруженных дисках
+  if ((Serial.available() == 0) && (millis() - previousMillisBUSY >= intervalBUSYline)) {
+   
+    if (SendMagInfo > 0 && (millis() - previousMillisMSG >= intervalBUSYline)) {  // Отправка информации о загруженных дисках
 
       digitalWrite(RS485DE, HIGH);    // Режим передачи
       for (byte i = 0; i < 8; i++) {  //
@@ -199,7 +197,7 @@ void loop() {
     }
 
 
-    if (SendInfoCD > 0 && (millis() - previousMillisMSG >= intervalBUSY)) {  // Отправка информации о диске
+    if (SendInfoCD > 0 && (millis() - previousMillisMSG >= intervalBUSYline)) {  // Отправка информации о диске
 
       digitalWrite(RS485DE, HIGH);     // Режим передачи
       for (byte i = 0; i < 12; i++) {  //
@@ -212,7 +210,7 @@ void loop() {
       SendInfoCD = 0;
     }
 
-    if (ChangeStatCD > 0 && SendMagInfo == 0 && (millis() - previousMillisMSG >= intervalBUSY)) {  //Смена состояния.
+    if (ChangeStatCD > 0 && SendMagInfo == 0 && (millis() - previousMillisMSG >= intervalBUSYline)) {  //Смена состояния.
 
       digitalWrite(RS485DE, HIGH);  //Режим передачи
       for (byte i = 1; i < 11; i++) {
@@ -248,6 +246,7 @@ void loop() {
       digitalWrite(RS485DE, LOW);  // Режим приёма
       CRCa = 0xFF;
       digitalWrite(LED_BUILTIN, LOW);
+       wdt_reset();                                                              // Reset Wathdog
     }
   }
   //======================================================================================================================
@@ -330,7 +329,7 @@ void processReceive(byte *data, int length) {
             Serial.write(APPROVE_STATUS);  // Подтверждаем приём
             Serial.flush();                // Ждём окончание передачи
             digitalWrite(RS485DE, LOW);    // Режим приёма
-            previousMillisMSG = (millis() - intervalMSGafterAPPROVE);
+           // previousMillisMSG = millis();
             packet.dataLength = waitedRawDataSize;  // Сохраняем длину пакета
             getPacket(packet);                      // Сохраняем пакет
           }
