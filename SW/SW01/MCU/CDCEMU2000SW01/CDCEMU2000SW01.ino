@@ -21,7 +21,7 @@ byte intervalBUSYline = 15;          // BUSY timeout rs485 line
 byte intervalLed = 20;               // LED interval
 byte intervalButton = 65;            // Button interval
 unsigned int intervalMSG = 500;      // Timeout TX
-unsigned int interval1s = 1000;      // 
+unsigned int interval1s = 1000;      //
 unsigned int PowerUpBTDelay = 7000;  // Timeout power up BT module
 
 
@@ -29,7 +29,7 @@ unsigned int PowerUpBTDelay = 7000;  // Timeout power up BT module
 #define SOUNDON 3                   // Turning on the sound relay
 #define ADDR (byte)0x32             // Address of the receiver
 #define ADDR0 (byte)0x30            // Address of the receiver , it is used only in Grand Prix 2000
-#define MASTER_ADDR (byte)0x11      // Address source 
+#define MASTER_ADDR (byte)0x11      // Address source
 #define MASTER_ADDR_OUT (byte)0x10  // Address recipient's
 #define TALK_STATUS (byte)0xFC      // Transmission start status
 #define APPROVE_STATUS (byte)0x0F   // Reception data package status
@@ -53,7 +53,7 @@ byte MSG_OUT[12] = { TALK_STATUS, MASTER_ADDR_OUT, ADDR, 0x07, 0x2B, 0x01, 0x01,
 bool SendInfoCD = 0;
 bool ChangeStatCD = 0;
 bool reservedPlayBT = 0;
-bool SendMagInfo = 0;
+bool SendMagInfo = 1;
 byte track = 0x01;
 byte CRCa = 0xFF;
 byte timeSec = 0x00;
@@ -90,7 +90,7 @@ void getPacket(Packet packet);
 
 void setup() {
 
-  wdt_enable(WDTO_2S);
+  wdt_enable(WDTO_8S);
 
   pinMode(RS485DE, OUTPUT);
   digitalWrite(RS485DE, LOW);
@@ -127,11 +127,17 @@ void loop() {
     digitalWrite(SkipFBT, LOW);
     digitalWrite(SkipBBT, LOW);
   }
+
   if (reservedPlayBT == 1 && millis() > PowerUpBTDelay) {  // Исполнение отложенного запуска
     digitalWrite(PlayBT, HIGH);
     previousMillisButton = millis();
     reservedPlayBT = 0;
   }
+
+  if ((millis() > PowerUpBTDelay) && (millis() < PowerUpBTDelay + intervalBUSYline)) {  // for be1801
+    SendMagInfo = 1;
+  }
+
 
 
   //======================================================================================================================
@@ -226,6 +232,7 @@ void loop() {
       CRCa = 0xFF;
       ChangeStatCD = 0;
       digitalWrite(LED_BUILTIN, LOW);
+      wdt_reset();
     }
     //======================================================================================================================
     // Отправка сообщения
@@ -353,8 +360,7 @@ void getPacket(Packet packet) {
     if (packet.data[0] == 0x62 && packet.data[1] == 0x03) {  // Open CDC MODE
 
       MSG_OUT[5] = 0x81;
-      SendMagInfo = 1;
-      // ChangeStatCD = 1;  //Запрос на смену состояния
+      ChangeStatCD = 1;  //Запрос на смену состояния
       if (millis() > PowerUpBTDelay) {
         digitalWrite(PlayBT, HIGH);
         previousMillisButton = millis();
@@ -381,8 +387,8 @@ void getPacket(Packet packet) {
       MSG_OUT[5] = 0x41;
       if (millis() > PowerUpBTDelay) {
         digitalWrite(PauseBT, HIGH);
+        previousMillisButton = millis();
       }
-      previousMillisButton = millis();
     }
   }
   //======================================================================================================================
