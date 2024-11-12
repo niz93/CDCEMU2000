@@ -44,6 +44,7 @@ unsigned int PowerUpBTDelay = 7000;  // Timeout power up BT module
 
 
 byte MSG_Mag1CD[8] = { TALK_STATUS, MASTER_ADDR_OUT, ADDR, 0x03, 0x2C, 0x20, 0x01, 0xD3 };                                // 1 disk is loaded
+//byte MSG_Mag1CD[8] = { TALK_STATUS, MASTER_ADDR_OUT, ADDR, 0x03, 0x2C, 0x23, 0xFF, 0x2E };                                // 10 disk is loaded
 byte MSG_CDInfo[12] = { TALK_STATUS, MASTER_ADDR_OUT, ADDR, 0x07, 0x2B, 0xA1, 0x01, MAX_TRACK, 0x60, 0x59, 0x00, 0xF1 };  // Track data on the disc
 byte MSG_ChangeState[12] = { TALK_STATUS, MASTER_ADDR_OUT, ADDR, 0x07, 0x2B, 0xB1, 0x01, 0x00, 0x00, 0x00, 0x01, 0x40 };  // Change status
 byte MSG_CDLoad[12] = { TALK_STATUS, MASTER_ADDR_OUT, ADDR, 0x07, 0x2B, 0x01, 0x01, 0x00, 0x00, 0x00, 0x01, 0x89 };       // Loading disk
@@ -54,6 +55,7 @@ bool SendInfoCD = 0;
 bool ChangeStatCD = 0;
 bool reservedPlayBT = 0;
 bool SendMagInfo = 1;
+bool SendLoadCD = 0;
 byte track = 0x01;
 byte CRCa = 0xFF;
 byte timeSec = 0x00;
@@ -188,6 +190,20 @@ void loop() {
   // Change status
   if ((Serial.available() == 0) && (millis() - previousMillisBUSY >= intervalBUSYline)) {
 
+     if (SendLoadCD > 0 && (millis() - previousMillisMSG >= intervalBUSYline)) {  // Отправка информации о загруженных дисках
+
+       digitalWrite(RS485DE, HIGH);                           // Режим передачи
+      for (byte i = 0; i < 12; i++) {                        //
+        Serial.write(MSG_CDLoad[i]);                         // Передача данных о загрузке
+      }                                                      //
+      Serial.flush();                                        // Ждём окончание передачи
+      digitalWrite(RS485DE, LOW);                            // Режим приёма
+      previousMillisMSG = millis();
+      SendInfoCD = 1;                                        // Запрос отправку информации о диске
+      SendLoadCD = 0;
+    }
+    
+    
     if (SendMagInfo > 0 && (millis() - previousMillisMSG >= intervalBUSYline)) {  // Отправка информации о загруженных дисках
 
       digitalWrite(RS485DE, HIGH);    // Режим передачи
@@ -448,15 +464,9 @@ void getPacket(Packet packet) {
   }
   //======================================================================================================================
   if (packet.dataLength == 0x05) {                           // Когда на входе 5 байт дата
-    previousMillisMSG = millis();                            //
+
     if (packet.data[0] == 0x62 && packet.data[1] == 0x10) {  // Запроса на переключение диска
-      digitalWrite(RS485DE, HIGH);                           // Режим передачи
-      for (byte i = 0; i < 12; i++) {                        //
-        Serial.write(MSG_CDLoad[i]);                         // Передача данных о загрузке
-      }                                                      //
-      Serial.flush();                                        // Ждём окончание передачи
-      digitalWrite(RS485DE, LOW);                            // Режим приёма
-      SendInfoCD = 1;                                        // Запрос отправку информации о диске
+      SendLoadCD = 1;                                        // Запрос отправку информации о диске
     }
   }
   //======================================================================================================================
