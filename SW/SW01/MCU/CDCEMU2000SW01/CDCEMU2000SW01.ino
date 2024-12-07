@@ -17,7 +17,7 @@ long previousMillisButton = 0;  // The time of the last button press
 long previousMillisLed = 0;     // The time when the LED was last turned on
 long previousMillisTime = 0;    // Time in seconds
 
-byte intervalBUSYline = 15;          // BUSY timeout rs485 line
+byte intervalBUSYline = 20;          // BUSY timeout rs485 line
 byte intervalLed = 20;               // LED interval
 byte intervalButton = 65;            // Button interval
 unsigned int intervalMSG = 500;      // Timeout TX
